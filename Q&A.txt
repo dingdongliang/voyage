@@ -145,3 +145,7 @@ A:oracle中有个sys_guid函数可以产生uuid。
       #{superid,jdbcType=DECIMAL}, #{sort,jdbcType=DECIMAL},
       #{state,jdbcType=DECIMAL})
   </insert>
+
+Q:怎么使用easyui的treegrid获取实心父节点，适用于1.4.5版本
+A：$("#checkTree").treegrid('getCheckedNodes',['indeterminate','checked']);
+   修改jquery.easyui.min.js源代码：$.inArray(row.checkState,_925)>=0
