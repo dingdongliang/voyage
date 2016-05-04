@@ -25,4 +25,6 @@ public interface CompanyMapper extends BaseMapper<Company> {
      * return:java.util.List<com.dyenigma.entity.Company>
      */
     List<Company> selectByPrntId(String prntId);
+
+    List<Company> findByPid(String pid);
 }

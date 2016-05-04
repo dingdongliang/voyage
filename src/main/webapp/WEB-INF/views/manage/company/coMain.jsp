@@ -29,16 +29,17 @@
         var $grid;
         $(function () {
             $dg = $("#dg");
-            $grid = $dg.datagrid({
-                url: "manage/comp/findComp",
+            $grid = $dg.treegrid({
+                url: "manage/comp/findAllCoList",
                 width: 'auto',
                 height: $(this).height() - 17,
-                pagination: true,
                 rownumbers: true,
+                animate: true,
+                fitColumns: true,
+                striped: true,
                 border: true,
                 idField: 'coId',
-                striped: true,
-                singleSelect: true,
+                treeField: 'coName',
                 columns: [[{
                     field: 'coName',
                     title: '公司名称',
@@ -98,7 +99,7 @@
 
             //弹窗增加公司
             $("#addComp").click(function () {
-                var row = $dg.datagrid('getSelected');
+                var row = $dg.treegrid('getSelected');
                 $.modalDialog({
                     title: '添加公司',
                     width: 600,
@@ -135,7 +136,7 @@
 
             //弹窗修改公司
             $("#updateComp").click(function () {
-                var row = $dg.datagrid('getSelected');
+                var row = $dg.treegrid('getSelected');
                 if (row) {
                     $.modalDialog({
                         title: '编辑公司',
@@ -174,7 +175,7 @@
             });
 
             $("#delComp").click(function () {
-                var row = $dg.datagrid('getSelected');
+                var row = $dg.treegrid('getSelected');
                 if (row) {
                     var rowIndex = $dg.datagrid('getRowIndex', row);
                     $.messager.confirm("提示", "确定要删除记录吗?", function (r) {
@@ -205,7 +206,7 @@
             });
 
             $("#toExcel").click(function () {
-                var row = $dg.datagrid('getSelected');
+                var row = $dg.treegrid('getSelected');
                 if (row) {
                     window.location.href = "manage/comp/excelExport/" + row.coId;
                 } else {

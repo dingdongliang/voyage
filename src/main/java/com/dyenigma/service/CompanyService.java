@@ -65,4 +65,6 @@ public interface CompanyService extends BaseMapper<Company> {
      * return:java.util.List<com.dyenigma.entity.Company>
      */
     List<Company> AllCoById(String coId);
+
+    List<Company> findByPid(String pid);
 }

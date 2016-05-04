@@ -95,6 +95,8 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
             BaseDomain.createLog(company, userId);
             company.setStatus(Constants.PERSISTENCE_STATUS);
             company.setCoId(UUIDUtils.getUUID());
+            company.setState(Constants.TREE_STATUS_CLOSED);
+            company.setIconCls(Constants.COMPANY_ICON);
             companyMapper.insert(company);
         } else {
             BaseDomain.editLog(company, userId);
@@ -134,5 +136,14 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
             }
         }
         return allList;
+    }
+
+
+    @Override
+    public List<Company> findByPid(String pid) {
+        List<Company> pList = StringUtil.isEmpty(pid) ?
+                companyMapper.findByPid("0") : companyMapper.findByPid(pid);
+        pList.stream().filter(Company -> StringUtil.isEmpty(pid)).forEach(Company -> Company.setPrntId("0"));
+        return pList;
     }
 }

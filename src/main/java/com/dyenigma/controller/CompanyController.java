@@ -54,12 +54,37 @@ public class CompanyController extends BaseController {
     }
 
     /**
-     * 获取所有的公司名称，供设置部门使用
+     * param return 参数
+     * return List<TreeModel> 返回类型
+     * throws
+     * Title: findSuperFunc
+     * Description:显示所有可添加子项的菜单项
      */
     @ResponseBody
-    @RequestMapping(value = "/getAllCoName", produces = "application/json;charset=utf-8")
-    public List<TreeModel> getAllCoName() {
+    @RequestMapping(value = "/findSuperComp", produces = "application/json;charset=utf-8")
+    public List<TreeModel> findSuperComp() {
         return companyService.getAllCoName();
+    }
+
+    /**
+     * param    request
+     * param return 参数
+     * return List<Permission> 返回类型
+     * throws
+     * Title: findAllFunctionList
+     * Description: 显示所有可操作的菜单项，用于菜单编辑页面
+     */
+    @ResponseBody
+    @RequestMapping(value = "/findAllCoList", produces = "application/json;charset=utf-8")
+    public List<Company> findAllCoList(HttpServletRequest request) {
+        String coId = request.getParameter("id");
+        return companyService.findByPid(coId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAllCo", produces = "application/json;charset=utf-8")
+    public List<Company> getAllCo() {
+        return companyService.findAll();
     }
 
     /**
@@ -76,19 +101,6 @@ public class CompanyController extends BaseController {
         gridModel.setRows(companyService.findComp(pageUtil));
         gridModel.setTotal(companyService.getCount(null));
         return gridModel;
-    }
-
-    /**
-     * param return 参数
-     * return List<TreeModel> 返回类型
-     * throws
-     * Title: findSuperFunc
-     * Description:显示所有可添加子项的菜单项
-     */
-    @ResponseBody
-    @RequestMapping(value = "/findSuperComp", produces = "application/json;charset=utf-8")
-    public List<TreeModel> findSuperComp() {
-        return companyService.getAllCoName();
     }
 
 

@@ -316,4 +316,11 @@
         FROM sys_company WHERE STATUS = 'E' and PRNT_ID = #{prntId,jdbcType=VARCHAR}
     </select>
 
+    <select id="findByPid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_company
+        WHERE STATUS='E' AND PRNT_ID = #{prntId,jdbcType=VARCHAR} ORDER BY SORT
+    </select>
+
 </mapper>

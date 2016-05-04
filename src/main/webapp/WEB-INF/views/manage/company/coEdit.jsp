@@ -38,7 +38,7 @@
                 $.messager.progress('close');
                 result = $.parseJSON(result);
                 if (result.status) {
-                    $.modalDialog.openner.datagrid('reload');
+                    $.modalDialog.openner.treegrid('reload');
                     $.modalDialog.handler.dialog('close');
                     $.messager.show({
                         title: result.title,
@@ -119,6 +119,7 @@
             <legend><img src="resources/core/images/fromedit.png" style="margin-bottom: -3px;"/> 公司编辑</legend>
             <input name="coId" id="coId" type="hidden"/>
             <input name="status" id="status" type="hidden"/>
+            <input name="state" id="state" type="hidden"/>
             <table>
                 <tr>
                     <th>公司名称</th>

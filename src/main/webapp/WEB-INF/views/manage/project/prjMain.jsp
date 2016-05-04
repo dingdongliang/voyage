@@ -25,8 +25,11 @@
             $dg = $("#dg");
             $grid = $dg.treegrid();
             $('#coList').tree({
-                url: 'manage/comp/getAllCoName',
+                url: 'manage/comp/getAllCo',
                 animate: true,
+                loadFilter: function (rows) {
+                    return convert(rows);
+                },
                 onLoadSuccess: function (node, data) {
                     if (data.length > 0)
                         loadDiv(data[0].id);
@@ -305,6 +308,49 @@
                 striped: true,
                 border: false
             });
+        }
+
+        //easyUI-tree:格式化简单格式的JSON数据
+        function convert(rows) {
+            function exists(rows, prntId) {
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].coId == prntId) return true;
+                }
+                return false;
+            }
+
+            var nodes = [];
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                if (!exists(rows, row.prntId)) {
+                    nodes.push({
+                        id: row.coId,
+                        text: row.coName,
+                        iconCls: row.iconCls
+                    });
+                }
+            }
+
+            var toDo = [];
+            for (var i = 0; i < nodes.length; i++) {
+                toDo.push(nodes[i]);
+            }
+            while (toDo.length) {
+                var node = toDo.shift();
+                for (var i = 0; i < rows.length; i++) {
+                    var row = rows[i];
+                    if (row.prntId == node.id) {
+                        var child = {id: row.coId, text: row.coName, iconCls: row.iconCls};
+                        if (node.children) {
+                            node.children.push(child);
+                        } else {
+                            node.children = [child];
+                        }
+                        toDo.push(child);
+                    }
+                }
+            }
+            return nodes;
         }
 
     </script>
