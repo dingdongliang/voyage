@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- Quartz定时任务 开始 -->
+    <bean id="SprQtz"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass">
+            <value>com.dyenigma.task.SprQtzDemo</value>
+        </property>
+    </bean>
+    <bean id="helloCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="SprQtz"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 11 * * * ?</value>
+        </property>
+    </bean>
+    <bean id="scheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <ref bean="helloCronTrigger"/>
+        </property>
+    </bean>
+    <!--Quartz定时任务结束 -->
+
+</beans>

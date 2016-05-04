@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyenigma.dao.PostRoleMapper">
+    <resultMap id="BaseResultMap" type="com.dyenigma.entity.PostRole">
+        <id column="PR_ID" property="prId" jdbcType="VARCHAR"/>
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR"/>
+        <result column="POST_ID" property="postId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        PR_ID, ROLE_ID, POST_ID, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_post_role
+        where PR_ID = #{prId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_post_role
+        where PR_ID = #{prId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.dyenigma.entity.PostRole">
+        insert into sys_post_role (PR_ID, ROLE_ID, POST_ID,
+        STATUS, CREATED, LASTMOD,
+        CREATER, MODIFYER)
+        values (#{prId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{postId,jdbcType=VARCHAR},
+        #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP}, #{lastmod,jdbcType=TIMESTAMP},
+        #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.dyenigma.entity.PostRole">
+        insert into sys_post_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="prId != null">
+                PR_ID,
+            </if>
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="postId != null">
+                POST_ID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="prId != null">
+                #{prId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="postId != null">
+                #{postId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.PostRole">
+        update sys_post_role
+        <set>
+            <if test="roleId != null">
+                ROLE_ID = #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="postId != null">
+                POST_ID = #{postId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PR_ID = #{prId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.PostRole">
+        update sys_post_role
+        set ROLE_ID = #{roleId,jdbcType=VARCHAR},
+        POST_ID = #{postId,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        where PR_ID = #{prId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="findAllByPostId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_post_role
+        WHERE STATUS = 'E' AND POST_ID = #{postId,jdbcType=VARCHAR}
+    </select>
+</mapper>

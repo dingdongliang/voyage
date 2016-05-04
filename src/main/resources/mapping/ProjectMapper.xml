@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyenigma.dao.ProjectMapper">
+    <resultMap id="BaseResultMap" type="com.dyenigma.entity.Project">
+        <id column="PRJ_ID" property="prjId" jdbcType="VARCHAR"/>
+        <result column="PRJ_NAME" property="prjName" jdbcType="VARCHAR"/>
+        <result column="PRJ_DESC" property="prjDesc" jdbcType="VARCHAR"/>
+        <result column="CO_ID" property="coId" jdbcType="VARCHAR"/>
+        <result column="CO_Name" property="coName" jdbcType="VARCHAR"/>
+        <result column="LEADER" property="leader" jdbcType="VARCHAR"/>
+        <result column="LEVEL" property="level" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        PRJ_ID, PRJ_NAME, PRJ_DESC,CO_ID,CO_NAME, LEADER, LEVEL, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_project
+        where PRJ_ID = #{prjId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_project
+        where PRJ_ID = #{prjId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.dyenigma.entity.Project">
+        insert into sys_project (PRJ_ID, PRJ_NAME, PRJ_DESC,CO_ID,CO_NAME,
+        LEADER, LEVEL, STATUS,
+        CREATED, LASTMOD, CREATER,
+        MODIFYER)
+        values (#{prjId,jdbcType=VARCHAR}, #{prjName,jdbcType=VARCHAR}, #{prjDesc,jdbcType=VARCHAR},
+        #{coId,jdbcType=VARCHAR},#{coName,jdbcType=VARCHAR},#{leader,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR},
+        #{status,jdbcType=CHAR},
+        #{created,jdbcType=TIMESTAMP}, #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR},
+        #{modifyer,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.dyenigma.entity.Project">
+        insert into sys_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="prjId != null">
+                PRJ_ID,
+            </if>
+            <if test="prjName != null">
+                PRJ_NAME,
+            </if>
+            <if test="prjDesc != null">
+                PRJ_DESC,
+            </if>
+            <if test="leader != null">
+                LEADER,
+            </if>
+            <if test="level != null">
+                LEVEL,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+            <if test="coId!=null">
+                CO_ID
+            </if>
+            <if test="coName!=null">
+                CO_NAME
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="prjId != null">
+                #{prjId,jdbcType=VARCHAR},
+            </if>
+            <if test="prjName != null">
+                #{prjName,jdbcType=VARCHAR},
+            </if>
+            <if test="prjDesc != null">
+                #{prjDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="leader != null">
+                #{leader,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="coId!=null">
+                #{coId,jdbcType=VARCHAR},
+            </if>
+            <if test="coName!=null">
+                #{coName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.Project">
+        update sys_project
+        <set>
+            <if test="prjName != null">
+                PRJ_NAME = #{prjName,jdbcType=VARCHAR},
+            </if>
+            <if test="prjDesc != null">
+                PRJ_DESC = #{prjDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="leader != null">
+                LEADER = #{leader,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                LEVEL = #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="coId!=null">
+                CO_ID=#{coId,jdbcType=VARCHAR},
+            </if>
+            <if test="coId!=null">
+                CO_Name=#{coName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PRJ_ID = #{prjId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.Project">
+        update sys_project
+        set PRJ_NAME = #{prjName,jdbcType=VARCHAR},
+        PRJ_DESC = #{prjDesc,jdbcType=VARCHAR},
+        LEADER = #{leader,jdbcType=VARCHAR},
+        LEVEL = #{level,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR},
+        CO_ID = #{coId,jdbcType=VARCHAR},
+        CO_NAME = #{coName,jdbcType=VARCHAR}
+        where PRJ_ID = #{prjId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getPrjByCoId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_project where CO_ID=#{coId,jdbcType=VARCHAR} and status='E'
+    </select>
+</mapper>

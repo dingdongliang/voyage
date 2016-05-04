@@ -1,0 +1,147 @@
+Q:easyui的iconCls在哪配置？
+A:icon.css
+
+Q:JQuery中$.each()不循环或者无限循环怎么处理?
+A:检查循环体的格式是否为JSONObject
+
+Q:JQuery为动态添加的元素绑定事件怎么处理?
+A:使用委托on,找到改动态添加元素的父元素，然后委托给它处理，详情见left.jsp中查询委托
+
+Q:SpringMVC restful地址配置，页面怎么调用WEB-INF中的jsp?
+A:使用controller中的跳转，详情见main.jsp
+
+Q:gradle使用变量
+A:见build.gradle的springVersion
+
+Q:SpringMVC的rest怎么访问Druid数据源监控页面？
+A:在web.xml中配置，详情见web.xml
+
+Q:Druid怎么配置监控Spring?
+A:见spring-mybatis-config.xml
+
+Q:Navicat不支持中文怎么解决？
+A:http://www.oracle.com/technetwork/topics/winx64soft-089540.html下载Instant Client包，在选项 -> OCI，
+选择目录中的 oci.dll，如地址不能使用，在www.oracle.com搜索Instant Client Downloads for 关键字后选择结果
+
+Q:JSP中不能直接实例化Spring bean，会导致注入失败.
+A:在jsp页面加载相关类，然后按如下方式处理即可
+<%@page import="org.springframework.web.context.support.*"%>
+<%@page import="org.springframework.context.*"%>
+ServletContext servletContext = request.getSession().getServletContext();
+ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+Demo demo = ctx.getBean("demo");
+
+Q:EasyUI输入表格验证怎么扩展？
+A:重写方法
+<script type="text/javascript">
+	$.extend($.fn.validatebox.defaults.rules, {
+		number : {
+			validator : function(value, param) {
+				return /^\d+(\.\d+)?$/.test(value);
+			},
+			message : '请输入数字'
+		}
+	});
+</script>
+<input class="easyui-textbox" type="text" name="value" data-options="validType:'number'"></input>
+
+Q:存储过程分页：
+A:
+CREATE PROCEDURE `NewProc`(
+IN `p_table_name` varchar(1024),
+IN `p_fields` varchar(1024),
+IN `p_page_size` int,
+IN `p_page_now` int,
+IN `p_order_string` varchar(128),
+IN `p_where_string` varchar(1024),
+OUT `p_out_rows` int
+)
+BEGIN
+	 /*定义变量*/
+    DECLARE m_begin_row INT DEFAULT 0;
+    DECLARE m_limit_string CHAR(64);
+
+    /*构造语句*/
+    SET m_begin_row = (p_page_now - 1) * p_page_size;
+    SET m_limit_string = CONCAT(' LIMIT ', m_begin_row, ', ', p_page_size);
+
+    SET @COUNT_STRING = CONCAT('SELECT COUNT(*) INTO @ROWS_TOTAL FROM ', p_table_name, ' ', p_where_string);
+    SET @MAIN_STRING = CONCAT('SELECT ', p_fields, ' FROM ', p_table_name, ' ', p_where_string, ' ', p_order_string, m_limit_string);
+
+    /*预处理*/
+    PREPARE count_stmt FROM @COUNT_STRING;
+    EXECUTE count_stmt;
+    DEALLOCATE PREPARE count_stmt;
+    SET p_out_rows = @ROWS_TOTAL;
+
+    PREPARE main_stmt FROM @MAIN_STRING;
+    EXECUTE main_stmt;
+    DEALLOCATE PREPARE main_stmt;
+END;
+
+运行参数：（参数中包含单引号，要换成两个单引号）
+'coa_demo','showid,name,REPLACE(replace(gender,''2'',''女''),''1'',''男'') gender',20,20000,'','where name like ''%5%''',@tt
+
+
+Q:存储过程批量插入
+A:
+BEGIN
+	DECLARE i INT DEFAULT 1;
+	WHILE i<1000 DO
+		if  i%2=0 THEN
+			insert into coa_demo(name,gender) values(CONCAT('name',i),'1');
+		ELSE
+			insert into coa_demo(name,gender) values(CONCAT('name',i),'2');
+		end IF;
+		set i=i+1;
+	END WHILE;
+
+
+END
+
+Q:oracle定时任务
+A:--新建存储过程
+  create or replace PROCEDURE del_dzfp_yzm as
+  BEGIN
+  DELETE from DZFP_YZM where SYSDATE-hqsj>=30/60/24;
+  end;
+
+  --新建定时任务
+  declare
+  	job_delYzm number;
+  begin
+      dbms_job.submit(job_delYzm,'del_dzfp_yzm;',sysdate,'sysdate+1/24/60');
+  end;
+
+  --查找定时任务的id
+  select * from dba_jobs;
+
+  --执行定时任务
+  begin
+  	dbms_job.run(301);
+  end;
+
+  --删除定时任务
+  begin
+  dbms_job.remove(301);
+  end;
+
+Q:自动生成mybatis配置文件等：
+A:1.配置generatorConfig.xml
+  2.java -jar E:\mybatis-generator-core-1.3.2.jar -configfile E:\generatorConfig.xml -overwrite
+  附：小技巧
+  a) 建表时，字段名称建议用"_"分隔多个单词，比如:AWB_NO、REC_ID...，这样生成的entity，属性名称就会变成漂亮的驼峰命名，即：awbNo、recId
+  b)oracle中，数值形的字段，如果指定精度，比如Number(12,2)，默认生成entity属性是BigDecimal型 ，如果不指定精度，比如:Number(9)，指默认生成的是Long型
+  c)oracle中的nvarchar/nvarchar2，mybatis-generator会识别成Object型，建议不要用nvarchar2，改用varchar2
+
+Q:使用uuid作为主键
+A:oracle中有个sys_guid函数可以产生uuid。
+  <insert id="insert" parameterType="com.xxx.SystemDepartment">
+      <selectKey keyProperty="id" resultType="String" order="BEFORE">
+          select sys_guid() from dual
+      </selectKey>
+      insert into SYSTEM_DEPARTMENT (ID,DEPNAME, SUPERID, SORT, STATE)
+      values ( #{id,jdbcType=VARCHAR},#{depname,jdbcType=VARCHAR},
+      #{superid,jdbcType=DECIMAL}, #{sort,jdbcType=DECIMAL},
+      #{state,jdbcType=DECIMAL})
+  </insert>

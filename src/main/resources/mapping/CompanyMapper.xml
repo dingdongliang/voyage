@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyenigma.dao.CompanyMapper">
+    <resultMap id="BaseResultMap" type="com.dyenigma.entity.Company">
+        <id column="CO_ID" property="coId" jdbcType="VARCHAR"/>
+        <result column="CO_NAME" property="coName" jdbcType="VARCHAR"/>
+        <result column="PRNT_ID" property="prntId" jdbcType="VARCHAR"/>
+        <result column="PRNT_NAME" property="prntName" jdbcType="VARCHAR"/>
+        <result column="STATE" property="state" jdbcType="VARCHAR"/>
+        <result column="ICON_CLS" property="iconCls" jdbcType="VARCHAR"/>
+        <result column="CO_PHONE" property="coPhone" jdbcType="VARCHAR"/>
+        <result column="CO_FAX" property="coFax" jdbcType="VARCHAR"/>
+        <result column="CO_ADR" property="coAdr" jdbcType="VARCHAR"/>
+        <result column="CO_ZIP" property="coZip" jdbcType="VARCHAR"/>
+        <result column="SORT" property="sort" jdbcType="INTEGER"/>
+        <result column="CO_EMAIL" property="coEmail" jdbcType="VARCHAR"/>
+        <result column="CONTACT" property="contact" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="MANAGER" property="manager" jdbcType="VARCHAR"/>
+        <result column="BANK" property="bank" jdbcType="VARCHAR"/>
+        <result column="BANK_ACCT" property="bankAcct" jdbcType="VARCHAR"/>
+        <result column="CO_DESC" property="coDesc" jdbcType="VARCHAR"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        CO_ID, CO_NAME, PRNT_ID, PRNT_NAME, STATE, ICON_CLS, CO_PHONE, CO_FAX, CO_ADR, CO_ZIP,
+        SORT, CO_EMAIL, CONTACT, STATUS, MANAGER, BANK, BANK_ACCT, CO_DESC, CREATER, MODIFYER,
+        CREATED, LASTMOD
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_company
+        where CO_ID = #{coId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_company
+        where CO_ID = #{coId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.dyenigma.entity.Company">
+        insert into sys_company (CO_ID, CO_NAME, PRNT_ID,
+        PRNT_NAME, STATE, ICON_CLS,
+        CO_PHONE, CO_FAX, CO_ADR,
+        CO_ZIP, SORT, CO_EMAIL,
+        CONTACT, STATUS, MANAGER,
+        BANK, BANK_ACCT, CO_DESC,
+        CREATER, MODIFYER, CREATED,
+        LASTMOD)
+        values (#{coId,jdbcType=VARCHAR}, #{coName,jdbcType=VARCHAR}, #{prntId,jdbcType=VARCHAR},
+        #{prntName,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{iconCls,jdbcType=VARCHAR},
+        #{coPhone,jdbcType=VARCHAR}, #{coFax,jdbcType=VARCHAR}, #{coAdr,jdbcType=VARCHAR},
+        #{coZip,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{coEmail,jdbcType=VARCHAR},
+        #{contact,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{manager,jdbcType=VARCHAR},
+        #{bank,jdbcType=VARCHAR}, #{bankAcct,jdbcType=VARCHAR}, #{coDesc,jdbcType=VARCHAR},
+        #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP},
+        #{lastmod,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.dyenigma.entity.Company">
+        insert into sys_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coId != null">
+                CO_ID,
+            </if>
+            <if test="coName != null">
+                CO_NAME,
+            </if>
+            <if test="prntId != null">
+                PRNT_ID,
+            </if>
+            <if test="prntName != null">
+                PRNT_NAME,
+            </if>
+            <if test="state != null">
+                STATE,
+            </if>
+            <if test="iconCls != null">
+                ICON_CLS,
+            </if>
+            <if test="coPhone != null">
+                CO_PHONE,
+            </if>
+            <if test="coFax != null">
+                CO_FAX,
+            </if>
+            <if test="coAdr != null">
+                CO_ADR,
+            </if>
+            <if test="coZip != null">
+                CO_ZIP,
+            </if>
+            <if test="sort != null">
+                SORT,
+            </if>
+            <if test="coEmail != null">
+                CO_EMAIL,
+            </if>
+            <if test="contact != null">
+                CONTACT,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="manager != null">
+                MANAGER,
+            </if>
+            <if test="bank != null">
+                BANK,
+            </if>
+            <if test="bankAcct != null">
+                BANK_ACCT,
+            </if>
+            <if test="coDesc != null">
+                CO_DESC,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coId != null">
+                #{coId,jdbcType=VARCHAR},
+            </if>
+            <if test="coName != null">
+                #{coName,jdbcType=VARCHAR},
+            </if>
+            <if test="prntId != null">
+                #{prntId,jdbcType=VARCHAR},
+            </if>
+            <if test="prntName != null">
+                #{prntName,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="iconCls != null">
+                #{iconCls,jdbcType=VARCHAR},
+            </if>
+            <if test="coPhone != null">
+                #{coPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="coFax != null">
+                #{coFax,jdbcType=VARCHAR},
+            </if>
+            <if test="coAdr != null">
+                #{coAdr,jdbcType=VARCHAR},
+            </if>
+            <if test="coZip != null">
+                #{coZip,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="coEmail != null">
+                #{coEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="contact != null">
+                #{contact,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="manager != null">
+                #{manager,jdbcType=VARCHAR},
+            </if>
+            <if test="bank != null">
+                #{bank,jdbcType=VARCHAR},
+            </if>
+            <if test="bankAcct != null">
+                #{bankAcct,jdbcType=VARCHAR},
+            </if>
+            <if test="coDesc != null">
+                #{coDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.Company">
+        update sys_company
+        <set>
+            <if test="coName != null">
+                CO_NAME = #{coName,jdbcType=VARCHAR},
+            </if>
+            <if test="prntId != null">
+                PRNT_ID = #{prntId,jdbcType=VARCHAR},
+            </if>
+            <if test="prntName != null">
+                PRNT_NAME = #{prntName,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                STATE = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="iconCls != null">
+                ICON_CLS = #{iconCls,jdbcType=VARCHAR},
+            </if>
+            <if test="coPhone != null">
+                CO_PHONE = #{coPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="coFax != null">
+                CO_FAX = #{coFax,jdbcType=VARCHAR},
+            </if>
+            <if test="coAdr != null">
+                CO_ADR = #{coAdr,jdbcType=VARCHAR},
+            </if>
+            <if test="coZip != null">
+                CO_ZIP = #{coZip,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                SORT = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="coEmail != null">
+                CO_EMAIL = #{coEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="contact != null">
+                CONTACT = #{contact,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="manager != null">
+                MANAGER = #{manager,jdbcType=VARCHAR},
+            </if>
+            <if test="bank != null">
+                BANK = #{bank,jdbcType=VARCHAR},
+            </if>
+            <if test="bankAcct != null">
+                BANK_ACCT = #{bankAcct,jdbcType=VARCHAR},
+            </if>
+            <if test="coDesc != null">
+                CO_DESC = #{coDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where CO_ID = #{coId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.Company">
+        update sys_company
+        set CO_NAME = #{coName,jdbcType=VARCHAR},
+        PRNT_ID = #{prntId,jdbcType=VARCHAR},
+        PRNT_NAME = #{prntName,jdbcType=VARCHAR},
+        STATE = #{state,jdbcType=VARCHAR},
+        ICON_CLS = #{iconCls,jdbcType=VARCHAR},
+        CO_PHONE = #{coPhone,jdbcType=VARCHAR},
+        CO_FAX = #{coFax,jdbcType=VARCHAR},
+        CO_ADR = #{coAdr,jdbcType=VARCHAR},
+        CO_ZIP = #{coZip,jdbcType=VARCHAR},
+        SORT = #{sort,jdbcType=INTEGER},
+        CO_EMAIL = #{coEmail,jdbcType=VARCHAR},
+        CONTACT = #{contact,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=CHAR},
+        MANAGER = #{manager,jdbcType=VARCHAR},
+        BANK = #{bank,jdbcType=VARCHAR},
+        BANK_ACCT = #{bankAcct,jdbcType=VARCHAR},
+        CO_DESC = #{coDesc,jdbcType=VARCHAR},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP}
+        where CO_ID = #{coId,jdbcType=VARCHAR}
+    </update>
+
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_company WHERE STATUS = 'E'
+    </select>
+
+    <select id="findAllByPage" parameterType="com.dyenigma.utils.PageUtil" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_company
+        WHERE STATUS = 'E' LIMIT #{begin},#{end}
+    </select>
+
+    <select id="getCount" resultType="long">
+        SELECT COUNT(*) FROM sys_company WHERE STATUS = 'E'
+    </select>
+
+    <select id="selectByPrntId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM sys_company WHERE STATUS = 'E' and PRNT_ID = #{prntId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

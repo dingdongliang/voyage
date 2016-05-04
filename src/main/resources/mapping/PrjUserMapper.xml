@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyenigma.dao.PrjUserMapper">
+    <resultMap id="BaseResultMap" type="com.dyenigma.entity.PrjUser">
+        <id column="PU_ID" property="puId" jdbcType="VARCHAR"/>
+        <result column="PRJ_ID" property="prjId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        PU_ID, PRJ_ID, USER_ID, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_prj_user
+        where PU_ID = #{puId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_prj_user
+        where PU_ID = #{puId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.dyenigma.entity.PrjUser">
+        insert into sys_prj_user (PU_ID, PRJ_ID, USER_ID,
+        STATUS, CREATED,
+        LASTMOD, CREATER, MODIFYER)
+        values (#{puId,jdbcType=VARCHAR}, #{prjId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+        #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP},
+        #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.dyenigma.entity.PrjUser">
+        insert into sys_prj_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="puId != null">
+                PU_ID,
+            </if>
+            <if test="prjId != null">
+                PRJ_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="puId != null">
+                #{puId,jdbcType=VARCHAR},
+            </if>
+            <if test="prjId != null">
+                #{prjId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.PrjUser">
+        update sys_prj_user
+        <set>
+            <if test="prjId != null">
+                PRJ_ID = #{prjId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PU_ID = #{puId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.PrjUser">
+        update sys_prj_user
+        set PRJ_ID = #{prjId,jdbcType=VARCHAR},
+        USER_ID = #{userId,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        where PU_ID = #{puId,jdbcType=VARCHAR}
+    </update>
+    <select id="getPrjUserByPrjId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_prj_user where PRJ_ID = #{prjId,jdbcType=VARCHAR} and status='E'
+    </select>
+</mapper>

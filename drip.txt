@@ -1,0 +1,127 @@
+环境：IDEA、JDK1.8
+
+1.File-New-Project-Empty Project，设定JDK版本
+2.File-New-Module-Gradle-java&web
+3.Run-Edit Configurations-Add-Tomcat Server-Deployment，选取新建的Module
+4.运行一下，会出现src/main/webapp下的index.jsp页面内容
+
+5.在src/main/webapp下新建WEB-INF文件夹，然后在该文件夹下新建classes
+6.ctrl+alt+shift+S打开设置界面，找到Modules-Module名-paths，设定User module compile output path为新建的classes路径
+7.同样修改test的路径同上
+
+8.在src/main/java下建立项目开发结构，使用SpringMVC+Spring+Mybatis开发，包含并不仅限于controller、model、mapper、service
+9.添加各种文件
+10.IDEA中错误警报不能注入Bean时，Settings-Inspections-Spring-Spring Core-Code-Autowiring for Bean Class去除勾选
+
+提交项目到Github
+
+1.配置IDEA中的git
+    Settings-Version Control-Git-Path to Git executable-选择你的安装目录
+    test
+2.配置github帐号密码
+    Settings-Version Control-GitHub
+    Host：github.com  Login:账号  Password：密码
+    Test
+3.创建本地仓库
+    VCS-Import into Version Control-Create Git Repository
+4.提交代码到本地Git
+    右键项目或者文件 Git-Add-Commit （先add 然后再提交）
+5.配置远程提交
+    github上创建仓库，获取仓库地址：https://github.com/dingdongliang/topic.git
+    Git Shell中配置远程仓库，或者cmd（要求配置环境变量），依次运行下面的命令
+    cd 项目目录
+    git remote add origin https://github.com/dingdongliang/topic.git
+    git push -u origin master
+6.普通提交
+    右键项目或文件 Git-Commit File or Directory
+    填写commit message，然后悬停在commit上选择commit and push即可
+7.多人协作开发
+    在Github 项目的 settings-Collaborators 下可以添加项目成员
+
+示例代码类介绍
+1.HTTP POST 上传文件示例：HttpPost.java，服务器端和接收表单提交一样处理
+2.
+
+配置web服务器：tomcat
+1.Run-Edit Configurations-点击加号-tomcat server-local
+2.application server-configure-添加本地tomcat
+3.on 'Update' action:Update classes and resources
+4.on frame deactivation:Update classes and resources
+5.静态文件随改随变
+6.修改完类文件shift+F9
+
+团队开发需要注意的问题：
+1.字符串判断是否为空要加入工具类，并且注意使用最有效率的判断方式
+2.获取request提交的参数统一处理，并声明使用方式
+3.
+
+国际化
+
+统计工具（百度统计）
+
+使用IDEA的live template设置注释快捷方式
+
+=======================【紧急、重要、一般、优化、额外】========================
+
+1.不管什么用户登录，获取的都是system的权限，已解决。解决方法：退出时清除shiro的缓存
+2.无穷级菜单设计，已解决。解决方法：使用递归生成菜单模型，缺陷：不适合于巨数量级菜单
+3.权限选择时，不能点击复选框选择，pass，目前easyui版本1.45不支持
+TODO 优化 4.后台页面加载的js统一化处理
+5.封装request提交的数据，使用map直接提交到mybatis配置文件中使用，已解决，解决方案：同No.17
+6.mybatis动态语句重写
+7.表结构与名称重新设计，添加权限前缀并与实体类对应
+TODO 优化 8.EASYUI代码风格统一化整理，简化处理
+TODO 优化 9.EASYUI combobox内容去掉自身，不可编辑
+TODO 重要 10.输入框逐一核实是否必填
+11.数据库表级联逻辑审核，比如组织挂靠与公司，如果某个公司删除了，要删除对应的组织记录.解决方案：有下属的不允许删除
+TODO 优化 12.javascript 全局变量优化
+TODO 重要 13.控制器上也添加权限控制,类似:@RequiresPermissions({"compAdd", "compEdit"})
+14.权限结构升级：公司-组织-岗位-角色-权限，特殊权限-用户
+TODO 一般 15.mybatis 存储过程，复杂查询使用
+TODO 重要 16.新加子菜单时，怎么同步权限问题，比如A菜单在角色A的权限范围内，A菜单添加子菜单A1，A1同步到角色A可用
+17.SpringMVC 封装参数，使用实体类，使用ModelAttribute注解(不加也行)，重点是表单中的字段必须是实体类的直接属性集合的子集
+TODO 重要 18.超级管理员默认所有权限，包含新建的默认赋予
+
+TODO 紧急 19.默认权限赋予默认角色SQL语句重写，新建用户授予默认角色重写
+TODO 紧急 20.全部删除逻辑都要检查一遍，包括删除变更新【用户删除没有检查外键/】
+TODO 重要 21.表单非空验证与提交验证检查
+TODO 重要 22.添加用户时，要验证用户帐号是否已经存在
+TODO 额外 23.项目组可另开一表，添加开始时间、结束时间，当前状态，完成情况等；考虑独立模块【项目管理】
+24.获取权限SQL语句重写
+TODO 重要 25.选择父菜单时，不能选择空值，需要修改
+TODO 重要 26.新建菜单时，要检查菜单编码是否唯一，防止权限紊乱【在数据库表上添加了唯一约束】
+TODO 一般 27.公司管理，母公司只能一个【prntId=0】
+28.手风琴菜单滑动条效果
+TODO 重要 29.项目组领导默认添加到项目组用户对应表内，修改时也要考虑这个环节
+TODO 优化 30.各种Tree（非TreeGrid）换成ztree展示
+TODO 优化 31.岗位批量分配用户
+TODO 优化 32.用户激活角色时添加和校验约束规则，保证某些角色不能同时激活
+TODO 优化 33.部门权限和岗位权限：部门分配权限和给岗位分配权限是有区别的。由于用户必须隶属于岗位，而岗位隶属于部门，部门的权限用户是不能继承的，部门的权限用来影响岗位权限。部门内的岗位权限不可超出部门权限，并且部门权限可分为通用权限（部门内岗位可自动继承）和特定权限（必须分配到具体岗位）。这样也可以实现分级的权限管理，由总管理员给部门分配权限，然后各部门管理员给本部门岗位分配权限。类似的我们也可以给职务分配权限，职务的权限将自动被关联此职务的岗位获得
+TODO 优化 34.easyui的中文支持，引入easyui-lang-zh_CN.js
+
+=======================【紧急、重要、一般、优化、额外】============================
+
+数据库设计备忘：
+1.基础表都有删除标记：status，D为deleted,U是used
+2.全部表都有操作信息字段：creater创建者,editor编辑者,createTime和editTime，放在baseDomain父类里
+
+权限管理思路：
+1、定义权限>>定义角色>>为人员分配角色（或者直接分配权限），这是一个分配权限的过程；
+2、定义受保护资源>>为“受保护资源”指定授权权限，这是一个授权的过程；
+3、应用程序请求“受保护资源”>>“受保护资源”的授权权限与人员持有的权限进行匹配>>成功允许访问失败不允许访问，这是一个认证的过程。
+
+数据权限的控制通过业务控制实现，比如部门主管能看所有字段，员工只能看个别字段，这个在查询的时候判断
+定义权限：菜单权限（功能权限）+数据权限（SQL定制）
+赋予权限：赋予角色，赋予岗位，赋予项目组，赋予用户
+认证权限：成员权限+角色权限+岗位权限+项目组权限
+
+
+菜单的删除：检查是否有子菜单，有就不能删除
+公司的删除：检查是否有子公司和子部门，有就不能删除
+部门的删除：部门下有岗位不能删除
+岗位的删除：同步删除角色映射记录
+角色的删除：同步删除岗位-角色映射、用户-角色映射、项目组-角色映射
+用户的删除：同步删除用户其他关联记录，用户-权限映射、用户-岗位映射、用户-角色映射
+项目组删除：同步删除项目组关联记录
+
+

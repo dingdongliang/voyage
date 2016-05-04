@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyenigma.dao.PostMapper">
+    <resultMap id="BaseResultMap" type="com.dyenigma.entity.Post">
+        <id column="POST_ID" property="postId" jdbcType="VARCHAR"/>
+        <result column="POST_NAME" property="postName" jdbcType="VARCHAR"/>
+        <result column="DIV_ID" property="divId" jdbcType="VARCHAR"/>
+        <result column="POST_DESC" property="postDesc" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        POST_ID, POST_NAME, DIV_ID, POST_DESC, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_post
+        where POST_ID = #{postId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_post
+        where POST_ID = #{postId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.dyenigma.entity.Post">
+        insert into sys_post (POST_ID, POST_NAME, DIV_ID,
+        POST_DESC, STATUS, CREATED,
+        LASTMOD, CREATER, MODIFYER
+        )
+        values (#{postId,jdbcType=VARCHAR}, #{postName,jdbcType=VARCHAR}, #{divId,jdbcType=VARCHAR},
+        #{postDesc,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP},
+        #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.dyenigma.entity.Post">
+        insert into sys_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="postId != null">
+                POST_ID,
+            </if>
+            <if test="postName != null">
+                POST_NAME,
+            </if>
+            <if test="divId != null">
+                DIV_ID,
+            </if>
+            <if test="postDesc != null">
+                POST_DESC,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="postId != null">
+                #{postId,jdbcType=VARCHAR},
+            </if>
+            <if test="postName != null">
+                #{postName,jdbcType=VARCHAR},
+            </if>
+            <if test="divId != null">
+                #{divId,jdbcType=VARCHAR},
+            </if>
+            <if test="postDesc != null">
+                #{postDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.Post">
+        update sys_post
+        <set>
+            <if test="postName != null">
+                POST_NAME = #{postName,jdbcType=VARCHAR},
+            </if>
+            <if test="divId != null">
+                DIV_ID = #{divId,jdbcType=VARCHAR},
+            </if>
+            <if test="postDesc != null">
+                POST_DESC = #{postDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where POST_ID = #{postId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.Post">
+        update sys_post
+        set POST_NAME = #{postName,jdbcType=VARCHAR},
+        DIV_ID = #{divId,jdbcType=VARCHAR},
+        POST_DESC = #{postDesc,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        where POST_ID = #{postId,jdbcType=VARCHAR}
+    </update>
+
+
+    <select id="findPostByDiv" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_post where DIV_ID = #{divId,jdbcType=VARCHAR} and status = 'E'
+    </select>
+
+    <update id="invalidByPrimaryKey" parameterType="java.lang.String">
+        update sys_post set status = 'I' where POST_ID = #{postId,jdbcType=VARCHAR}
+    </update>
+</mapper>

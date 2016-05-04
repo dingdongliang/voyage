@@ -1,0 +1,71 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 引入属性文件 -->
+    <context:property-placeholder location="classpath:config.properties"/>
+
+    <context:component-scan base-package="com.dyenigma.service"/>
+
+    <bean class="com.dyenigma.utils.SpringUtil"/>
+
+    <!-- 设置默认的文件上传路径 -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.dyenigma.utils.FileUploadUtils.setDefaultBaseDir"/>
+        <property name="arguments" value="${file.upload.dir}"/>
+    </bean>
+
+    <!-- 验证码生成类 -->
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <!--在session中获取code以取得验证码的值 -->
+                        <prop key="kaptcha.session.key">code</prop>
+                        <!-- 验证码长度 -->
+                        <prop key="kaptcha.textproducer.char.length">5</prop>
+                        <!-- 验证码文本字符大小 -->
+                        <prop key="kaptcha.textproducer.font.size">36</prop>
+                        <!-- 图片边框，合法值：yes , no -->
+                        <prop key="kaptcha.border">yes</prop>
+                        <!-- 边框颜色，合法值： r,g,b (and optional alpha) 或者 white,black,blue. -->
+                        <prop key="kaptcha.border.color">105,179,90</prop>
+                        <!-- 边框厚度，合法值：>0 -->
+                        <prop key="kaptcha.border.thickness">1</prop>
+                        <!-- 图片实现类 -->
+                        <prop key="kaptcha.producer.impl">com.google.code.kaptcha.impl.DefaultKaptcha</prop>
+                        <!-- 图片样式，水纹WaterRipple,鱼眼FishEyeGimpy,阴影ShadowGimpy，可以自己继承com.google.code.kaptcha.GimpyEngine自定义样式 -->
+                        <prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.FishEyeGimpy</prop>
+                        <!-- 字体颜色，合法值： r,g,b 或者 white,black,blue. -->
+                        <prop key="kaptcha.textproducer.font.color">black</prop>
+                        <!-- 字体 -->
+                        <prop key="kaptcha.textproducer.font.names">Arial, Courier</prop>
+                        <!-- 文字间隔 -->
+                        <prop key="kaptcha.textproducer.char.space">4</prop>
+                        <!-- 文字渲染器 -->
+                        <prop key="kaptcha.word.impl">com.google.code.kaptcha.text.impl.DefaultWordRenderer
+                        </prop>
+                        <!-- 文本集合,验证码值从此集合中获取 -->
+                        <prop key="kaptcha.textproducer.char.string">abcde2345678gfynmnpwx</prop>
+                        <!-- 文本实现类 -->
+                        <prop key="kaptcha.textproducer.impl">com.google.code.kaptcha.text.impl.DefaultTextCreator
+                        </prop>
+                        <!-- 干扰实现类，可以自己继承com.google.code.kaptcha.NoiseProducer，自定义干扰线 -->
+                        <prop key="kaptcha.noise.impl">com.google.code.kaptcha.impl.NoNoise</prop>
+                        <!-- 干扰颜色，合法值： r,g,b 或者 white,black,blue. -->
+                        <prop key="kaptcha.noise.color">black</prop>
+                        <!-- 背景实现类 -->
+                        <prop key="kaptcha.background.impl">com.google.code.kaptcha.impl.DefaultBackground
+                        </prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+</beans>
