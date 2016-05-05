@@ -34,8 +34,7 @@ public class RolePmsnServiceImpl extends BaseServiceImpl<RolePmsn> implements Ro
         List<Permission> permissions = new ArrayList<>();
         List<RolePmsn> idList = rolePmsnMapper.findAllByRoleId(roleId);
         for (RolePmsn rolePmsn : idList) {
-            Permission permission = new Permission();
-            permission.setPmsnId(rolePmsn.getPmsnId());
+            Permission permission = permissionMapper.selectByPrimaryKey(rolePmsn.getPmsnId());
             permissions.add(permission);
         }
         return permissions;
