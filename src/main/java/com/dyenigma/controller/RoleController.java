@@ -98,7 +98,7 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 删除角色信息  TODO 同时需要删除相关的权限配置，在业务层进行事务处理（包含用户角色和权限角色两种）
+     * 删除角色信息
      * param request
      * return
      */
@@ -147,6 +147,22 @@ public class RoleController extends BaseController {
         Json json = new Json();
 
         if (rolePmsnService.savePermission(roleId, checkedIds)) {
+            json.setStatus(true);
+            json.setMessage(Constants.POST_DATA_SUCCESS);
+        } else {
+            json.setMessage(Constants.POST_DATA_FAIL);
+        }
+
+        return JSONArray.toJSONString(json);
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/setDefaultRole",produces = "application/json;charset=utf-8")
+    public String setDefaultRole(HttpServletRequest request){
+        String roleId = request.getParameter("roleId");
+        Json json = new Json();
+
+        if (rolePmsnService.setDefaultRole(roleId)) {
             json.setStatus(true);
             json.setMessage(Constants.POST_DATA_SUCCESS);
         } else {

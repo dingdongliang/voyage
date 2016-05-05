@@ -35,4 +35,6 @@ public interface RolePmsnMapper extends BaseMapper<RolePmsn> {
      * return:java.util.List<java.lang.Integer>
      */
     List<String> findAllByPmsnId(String permissionId);
+
+    int delByPmsnId(String pmsnId);
 }

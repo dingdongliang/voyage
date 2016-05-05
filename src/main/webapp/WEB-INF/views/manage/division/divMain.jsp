@@ -1,3 +1,5 @@
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%
@@ -10,14 +12,8 @@
 <head>
     <base href="<%=basePath%>"/>
     <meta charset="UTF-8">
-    <title>组织管理</title>
-    <script type="text/javascript" src="resources/public/js/jquery.js"></script>
-    <link href="resources/core/css/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="resources/public/css/easyui.css">
-    <link rel="stylesheet" type="text/css" href="resources/public/css/icon.css">
-    <script type="text/javascript" src="resources/public/js/jquery.easyui.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="resources/check/css/common.css">
-    <script type="text/javascript" src="resources/check/js/jqueryUtil.js"></script>
+    <title>部门管理</title>
+    <tags:include/>
     <script type="text/javascript">
         var $dg;
         var $grid;
@@ -54,7 +50,7 @@
                 } else {
                     var row = $dg.treegrid('getSelected');
                     $.modalDialog({
-                        title: "添加组织",
+                        title: "添加部门",
                         width: 600,
                         height: 400,
                         href: "/manage/organ/organEditDlg/" + data.id,
@@ -101,7 +97,7 @@
                 var data = $("#coList").tree('getSelected');
                 if (row) {
                     $.modalDialog({
-                        title: "编辑菜单",
+                        title: "编辑部门",
                         width: 600,
                         height: 400,
                         href: "/manage/organ/organEditDlg/" + data.id,

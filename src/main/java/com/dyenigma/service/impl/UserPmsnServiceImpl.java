@@ -40,7 +40,7 @@ public class UserPmsnServiceImpl extends BaseServiceImpl<UserPmsn> implements Us
         //循环处理这些对应记录，逐一放入map中，然后设置该记录为过期，用于标记删除
         for (UserPmsn userPmsn : urList) {
             //对于该对应记录来说，互斥的ID当成key处理
-            map.put(userPmsn.getPmsnId() + "", userPmsn);
+            map.put(userPmsn.getPmsnId(), userPmsn);
             //设置所有记录过期
             updUserPmsn(currentUserId, userPmsn, Constants.PERSISTENCE_DELETE_STATUS);
         }

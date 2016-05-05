@@ -30,7 +30,7 @@
         $(function () {
             $dg = $("#dg");
             $grid = $dg.datagrid({
-                url: "bug/bugAction!findBugList.action",
+                url: " ",
                 width: 'auto',
                 height: $(this).height() - 85,
                 pagination: true,
@@ -89,7 +89,7 @@
                     title: '编辑BUG',
                     width: 600,
                     height: 400,
-                    href: "jsp/bugManager/bugEdit.jsp",
+                    href: " ",
                     onLoad: function () {
                         var f = parent.$.modalDialog.handler.find("#form");
                         f.form("load", row);
@@ -126,7 +126,7 @@
                 title: '添加BUG',
                 width: 600,
                 height: 400,
-                href: "jsp/bugManager/bugEdit.jsp",
+                href: " ",
                 buttons: [{
                     text: '保存',
                     iconCls: 'icon-ok',

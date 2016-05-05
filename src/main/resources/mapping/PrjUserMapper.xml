@@ -130,4 +130,10 @@
         <include refid="Base_Column_List"/>
         from sys_prj_user where PRJ_ID = #{prjId,jdbcType=VARCHAR} and status='E'
     </select>
+
+    <select id="findAllByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_prj_user where USER_ID = #{userId,jdbcType=VARCHAR} and status='E'
+    </select>
 </mapper>

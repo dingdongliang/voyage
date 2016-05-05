@@ -5,6 +5,8 @@
   Time: 17:39
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%
@@ -17,13 +19,7 @@
 <head>
     <base href="<%=basePath%>"/>
     <title>权限编辑</title>
-    <script type="text/javascript" src="resources/public/js/jquery.js"></script>
-    <link href="resources/core/css/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="resources/public/css/easyui.css">
-    <link rel="stylesheet" type="text/css" href="resources/public/css/icon.css">
-    <script type="text/javascript" src="resources/public/js/jquery.easyui.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="resources/check/css/common.css">
-    <script type="text/javascript" src="resources/check/js/jqueryUtil.js"></script>
+    <tags:include/>
     <script type="text/javascript">
         var $role;
         var $function;
@@ -99,14 +95,6 @@
                                 timeout: 1000 * 2
                             });
                         }
-                    });
-                },
-                onLoadSuccess: function () {
-                    var pager = $role.datagrid('getPager');
-                    pager.pagination({
-                        beforePageText: '第',
-                        afterPageText: '页 共{pages}页',
-                        displayMsg: '当前第{from}-{to}条记录 共{total}条记录'
                     });
                 }
             });
@@ -214,6 +202,23 @@
                         timeout: 1000 * 2
                     });
                 }
+            });
+
+            $("#roleDefault").click(function () {
+                var selectionRole = $role.datagrid('getSelected');
+                $.ajax({
+                    url: "manage/role/setDefaultRole",
+                    data: {
+                        roleId: selectionRole.roleId
+                    },
+                    success: function (msg) {
+                        $.messager.show({
+                            title: msg.title,
+                            msg: msg.message,
+                            timeout: 1000 * 2
+                        });
+                    }
+                });
             });
 
             //删除角色
@@ -330,27 +335,32 @@
 <body>
 <div id="panel" data-options="border:false">
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'west',split:true,border:true" style="width:500px;">
+        <div data-options="region:'west',split:true,border:true" style="width:43%;">
             <div id="tbRole" class="easyui-layout">
                 <ul class="toolbar">
                     <shiro:hasPermission name="roleAdd">
                         <li id="roleAdd"><span><img
-                                src="resources/core/images/t01.png"/></span>添加角色
+                                src="resources/core/images/t01.png"/></span>添加
                         </li>
                     </shiro:hasPermission>
                     <shiro:hasPermission name="roleEdit">
                         <li id="roleEdit"><span><img
-                                src="resources/core/images/t02.png"/></span>修改角色
+                                src="resources/core/images/t02.png"/></span>修改
                         </li>
                     </shiro:hasPermission>
                     <shiro:hasPermission name="roleDel">
                         <li id="roleDel"><span><img
-                                src="resources/core/images/t03.png"/></span>删除角色
+                                src="resources/core/images/t03.png"/></span>删除
                         </li>
                     </shiro:hasPermission>
                     <shiro:hasPermission name="rolePmsn">
                         <li id="roleSave"><span><img
                                 src="resources/core/images/save.png"/></span>权限保存
+                        </li>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="roleDefault">
+                        <li id="roleDefault"><span><img
+                                src="resources/core/images/save.png"/></span>默认权限
                         </li>
                     </shiro:hasPermission>
                 </ul>

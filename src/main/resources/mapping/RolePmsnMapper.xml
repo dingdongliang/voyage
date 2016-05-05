@@ -144,4 +144,8 @@
         GROUP BY ROLE_ID
     </select>
 
+    <delete id="delByPmsnId" parameterType="String">
+        delete from sys_role_pmsn where PMSN_ID = #{pmsnId,jdbcType=VARCHAR}
+    </delete>
+
 </mapper>

@@ -1,10 +1,3 @@
-<%@ page language="java" pageEncoding="utf-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
-%>
-<base href="<%=basePath%>"/>
 <script type="text/javascript">
     $('#postList').tree({
         url: 'manage/users/getPostList',
@@ -39,7 +32,7 @@
                     $("#postList").tree('unselectAll');
                     $.messager.show({
                         title: "提示",
-                        msg: "预设角色失败!",
+                        msg: "预设岗位失败!",
                         timeout: 1000 * 2
                     });
                 }

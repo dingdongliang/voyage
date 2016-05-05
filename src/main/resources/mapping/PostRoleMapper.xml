@@ -132,4 +132,13 @@
         FROM sys_post_role
         WHERE STATUS = 'E' AND POST_ID = #{postId,jdbcType=VARCHAR}
     </select>
+
+    <select id="findAllByRoleId" parameterType="String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_post_role where status='E' and ROLE_ID =
+        #{roleId,jdbcType=VARCHAR}
+    </select>
+
+
 </mapper>

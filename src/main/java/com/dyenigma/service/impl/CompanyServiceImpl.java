@@ -3,6 +3,7 @@ package com.dyenigma.service.impl;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.Company;
 import com.dyenigma.entity.Division;
+import com.dyenigma.entity.Project;
 import com.dyenigma.model.TreeModel;
 import com.dyenigma.service.CompanyService;
 import com.dyenigma.utils.Constants;
@@ -51,7 +52,7 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
         list.stream().filter(co -> id.equals(co.getPrntId())).forEach(co -> {
             TreeModel menu = new TreeModel();
             menu.setState(Constants.TREE_STATUS_OPEN); //这里必须关闭节点，否则会出现无限节点
-            menu.setId(co.getCoId() + "");
+            menu.setId(co.getCoId());
             menu.setPid("0".equals(co.getPrntId()) ? "" : co.getPrntId());
             menu.setIconCls(co.getIconCls());
             menu.setText(co.getCoName());
@@ -77,21 +78,24 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
 
     @Override
     public boolean delComp(String compId) {
-        List<Division> oList = divisionMapper.findByCompId(compId);
-        //如果公司下面还有组织信息，则不能删除
-        if (oList.size() > 0) {
+        List<Division> divList = divisionMapper.findByCompId(compId);
+        List<Company> coList = companyMapper.findByPid(compId);
+        List<Project> pList = projectMapper.getPrjByCoId(compId);
+        //如果公司下面有组织信息或子公司，则不能删除
+        if (divList.size() > 0 && coList.size() > 0 && pList.size() > 0) {
             return false;
         } else {
-            return companyMapper.deleteByPrimaryKey(compId) > 0;
+            Company co = companyMapper.selectByPrimaryKey(compId);
+            co.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
+            return companyMapper.updateByPrimaryKey(co) > 0;
         }
-
     }
 
     @Override
     public boolean persistenceComp(Company company) {
 
         String userId = Constants.getCurrendUser().getUserId();
-        if (StringUtil.isEmpty(company.getCoId() + "")) {
+        if (StringUtil.isEmpty(company.getCoId())) {
             BaseDomain.createLog(company, userId);
             company.setStatus(Constants.PERSISTENCE_STATUS);
             company.setCoId(UUIDUtils.getUUID());

@@ -11,7 +11,6 @@ package com.dyenigma.service.impl;
 
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.Permission;
-import com.dyenigma.entity.RolePmsn;
 import com.dyenigma.model.MenuModel;
 import com.dyenigma.model.MultiMenu;
 import com.dyenigma.model.TreeModel;
@@ -46,7 +45,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
 
         // 用于存放根目录的List
         List<MenuModel> parentList = new ArrayList<>();
-        // 循环的逻辑：首先遍历所有记录，当PrntId为空时，该记录为根目录，TODO 这里需要考虑递归？
+        // 循环的逻辑：首先遍历所有记录，当PrntId为空时，该记录为根目录，因菜单格式布局，只显示两级菜单
         for (Permission parent : pList) {
             String id = String.valueOf(parent.getPmsnId());
             if ("0".equals(parent.getPrntId())) {
@@ -98,20 +97,26 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
     }
 
     /**
-     * 删除菜单，
+     * 删除菜单
+     * 1.如果包含子菜单，不能删除
+     * 2.满足上面的条件，先删除用户权限映射和角色权限映射后再删除
      * param id
      * return
      */
     @Override
     public boolean deleteById(String id) {
-        //如果在权限角色映射表中有记录，则不能删除
-        List<String> list = rolePmsnMapper.findAllByPmsnId(id);
-        if (list.size() > 0) {
+
+        //如果包含有子菜单，则不能删除
+        List<Permission> pList = permissionMapper.findByPid(id);
+
+        if (pList.size() > 0) {
             return false;
         } else {
-            //如果包含有子菜单，则不能删除
-            List<Permission> pList = permissionMapper.findByPid(id);
-            return pList.size() <= 0 && permissionMapper.updateById(id) > 0;
+            userPmsnMapper.delByPmsnId(id);//删除用户权限映射
+            rolePmsnMapper.delByPmsnId(id);//删除角色权限映射
+            Permission pmsn = permissionMapper.selectByPrimaryKey(id);
+            pmsn.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
+            return permissionMapper.updateByPrimaryKey(pmsn) > 0;
         }
     }
 
@@ -131,7 +136,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
             } else {
                 TreeModel menu = new TreeModel();
                 menu.setState(Constants.TREE_STATUS_OPEN); //这里必须关闭节点，否则会出现无限节点
-                menu.setId(perm.getPmsnId() + "");
+                menu.setId(perm.getPmsnId());
                 menu.setPid("0".equals(perm.getPrntId()) ? "" : perm.getPrntId());
                 menu.setIconCls(perm.getIconCls());
                 menu.setText(perm.getPmsnName());
@@ -161,7 +166,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
             permission.setPmsnId(UUIDUtils.getUUID());
             permissionMapper.insert(permission);
         } else {
-            //TODO 这里还要考虑如果修改菜单名称，同步修改其子菜单对应的prntName名称
+            //这里还要考虑如果修改菜单名称，同步修改其子菜单对应的prntName名称，关系不大
             if (Constants.PMSN_M.equals(permission.getPmsnType())) {
                 permission.setState(Constants.TREE_STATUS_CLOSED);
             } else {
@@ -169,21 +174,6 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
             }
             BaseDomain.editLog(permission, userId);
             permissionMapper.updateByPrimaryKeySelective(permission);
-        }
-        //TODO 这里修改添加默认权限到默认角色中
-        if ("Y".equals(permission.getIsDefault())) {
-            //获取所有具有有效映射的角色信息
-            List<String> idList = rolePmsnMapper.findAllRoleId();
-            //TODO 每个角色都添加该默认权限？只添加默认角色，待修改
-            for (String roldId : idList) {
-                RolePmsn rolePmsn = new RolePmsn();
-                rolePmsn.setStatus(Constants.PERSISTENCE_STATUS);
-                BaseDomain.createLog(rolePmsn, userId);
-                rolePmsn.setPmsnId(permission.getPmsnId());
-                rolePmsn.setRoleId(roldId);
-                rolePmsn.setRpId(UUIDUtils.getUUID());
-                rolePmsnMapper.insert(rolePmsn);
-            }
         }
         return true;
     }
@@ -203,7 +193,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
         List<MultiMenu> menuList = new ArrayList<>();
         list.stream().filter(perm -> id.equals(perm.getPrntId())).forEach(perm -> {
             MultiMenu menu = new MultiMenu();
-            menu.setId(perm.getPmsnId() + "");
+            menu.setId(perm.getPmsnId());
             menu.setPid("0".equals(perm.getPrntId()) ? "" : perm.getPrntId());
             menu.setIconCls(perm.getIconCls());
             menu.setName(perm.getPmsnName());

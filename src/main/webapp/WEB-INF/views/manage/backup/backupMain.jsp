@@ -30,7 +30,7 @@
         $(function () {
             $dg = $("#dg");
             $grid = $dg.datagrid({
-                url: "dbBackUp/dbBackUpAction!findDbBackUpAllList.action",
+                url: "",
                 width: 'auto',
                 height: $(this).height() - 85,
                 pagination: true,

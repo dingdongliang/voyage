@@ -7,5 +7,5 @@ import java.util.List;
 public interface PrjUserMapper extends BaseMapper<PrjUser> {
     List<PrjUser> getPrjUserByPrjId(String prjId);
 
-
+    List<PrjUser> findAllByUserId(String userId);
 }

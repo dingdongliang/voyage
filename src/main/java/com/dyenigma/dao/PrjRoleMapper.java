@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface PrjRoleMapper extends BaseMapper<PrjRole> {
     List<PrjRole> findAllByPrjId(String prjId);
+
+    List<PrjRole> findAllByRoleId(String roleId);
 }

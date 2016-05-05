@@ -12,8 +12,10 @@
 package com.dyenigma.controller;
 
 
+import com.dyenigma.entity.User;
 import com.dyenigma.model.MenuModel;
 import com.dyenigma.service.PermissionService;
+import com.dyenigma.service.UserService;
 import com.google.code.kaptcha.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +49,8 @@ public class LoginController {
 
     @Autowired
     private PermissionService permissionService;
+    @Autowired
+    private UserService userService;
 
     /**
      * param request
@@ -89,7 +94,13 @@ public class LoginController {
                 subject.login(token);
             }
             LOGGER.debug("对用户[" + account + "]进行登录验证..验证通过");
-            //TODO 这里要获取登录的时间，方便前台页面显示
+
+            //获取登录的时间，方便前台页面显示
+            String userId = com.dyenigma.utils.Constants.getCurrendUser().getUserId();
+            User user = userService.selectByPrimaryKey(userId);
+            user.setPrevLogin(new Date());
+            userService.updateByPrimaryKey(user);
+
             request.getSession().setAttribute("currUser", account);
             resultPageURL += "manage/main";
             LOGGER.debug(resultPageURL);

@@ -7,7 +7,7 @@
 <base href="<%=basePath%>"/>
 <script type="text/javascript">
     $(function () {
-        //TODO 这里的数据加载完以后，还要勾选上岗位已经具有的角色
+
         $("#roleList").datalist({
             url: 'manage/role/findAllRoleList',
             method: 'get',

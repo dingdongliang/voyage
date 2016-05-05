@@ -15,7 +15,7 @@
 <script type="text/javascript">
     $(function () {
         $("#form").form({
-            url: "dbBackUp/dbBackUpAction!schedule.action",
+            url: "",
             onSubmit: function () {
                 parent.$.messager.progress({
                     title: '提示',

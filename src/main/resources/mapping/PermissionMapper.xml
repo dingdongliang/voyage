@@ -289,9 +289,10 @@
         FROM sys_permission WHERE STATUS='E'
     </select>
 
-    <!--TODO 默认权限添加到默认角色中-->
     <select id="findAllDefault" resultMap="BaseResultMap">
-        SELECT PMSN_ID FROM sys_permission WHERE STATUS='E' AND IS_DEFAULT='Y'
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_permission WHERE STATUS='E' AND IS_DEFAULT='Y'
     </select>
 
     <select id="findByPid" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -307,11 +308,4 @@
         FROM sys_permission
         WHERE STATUS = 'E' AND PMSN_TYPE = 'M' ORDER BY SORT
     </select>
-
-    <update id="updateById" parameterType="java.lang.String">
-        UPDATE sys_permission SET
-        IS_USED='N',STATUS='I' WHERE PMSN_ID=#{id,jdbcType=VARCHAR}
-    </update>
-
-
 </mapper>

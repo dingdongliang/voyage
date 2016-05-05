@@ -1,10 +1,3 @@
-<%@ page language="java" pageEncoding="utf-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
-%>
-<base href="<%=basePath%>"/>
 <script type="text/javascript">
     $(function () {
 
@@ -111,16 +104,17 @@
                         <td><input name="userName" id="userName" type="text" class="easyui-textbox easyui-validatebox"
                                    required="required"/></td>
                         <th>用户账号</th>
-                        <td><input name="account" class="easyui-textbox easyui-validatebox" id="account" type="text"/>
+                        <td><input name="account" class="easyui-textbox easyui-validatebox" id="account" type="text"
+                                   required="required"/>
                         </td>
                     </tr>
                     <tr>
                         <th>邮箱</th>
                         <td><input id="userEmail" name="userEmail" type="text" class="easyui-textbox easyui-validatebox"
-                                   required="required"/></td>
+                        /></td>
                         <th>电话</th>
                         <td><input id="userPhone" name="userPhone" type="text" class="easyui-textbox easyui-validatebox"
-                                   required="required"/></td>
+                        /></td>
                     </tr>
                     <tr>
                         <th>排序值</th>

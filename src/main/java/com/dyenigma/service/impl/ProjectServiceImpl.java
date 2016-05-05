@@ -68,9 +68,20 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
      */
     @Override
     public boolean delPrj(String prjId) {
-        Project prj = projectMapper.selectByPrimaryKey(prjId);
-        prj.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-        return projectMapper.updateByPrimaryKey(prj) > 0;
+
+        List<PrjUser> prjUserList = prjUserMapper.getPrjUserByPrjId(prjId);
+        if (prjUserList.size() > 0) {
+            return false;
+        } else {
+            List<PrjRole> prjRoleList = prjRoleMapper.findAllByPrjId(prjId);
+            for (PrjRole prjRole : prjRoleList) {
+                prjRoleMapper.deleteByPrimaryKey(prjRole.getPrId());
+            }
+
+            Project prj = projectMapper.selectByPrimaryKey(prjId);
+            prj.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
+            return projectMapper.updateByPrimaryKey(prj) > 0;
+        }
     }
 
     /**

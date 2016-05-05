@@ -11,7 +11,7 @@ import java.io.StringWriter;
 import java.util.*;
 
 /**
- * 日志工具类 //TODO
+ * 日志工具类
  * <p>
  * author dyenigma
  * create 2016/3/1 9:53

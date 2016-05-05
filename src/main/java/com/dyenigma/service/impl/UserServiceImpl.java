@@ -46,6 +46,18 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
             user.setStatus(Constants.PERSISTENCE_STATUS);
             user.setUserId(UUIDUtils.getUUID());
             userMapper.insert(user);
+
+            List<Role> rList = roleMapper.findDefaultRole();
+            for (Role role : rList) {
+                UserRole userRole = new UserRole();
+                BaseDomain.createLog(userRole, userId);
+                userRole.setUrId(UUIDUtils.getUUID());
+                userRole.setUserId(user.getUserId());
+                userRole.setRoleId(role.getRoleId());
+                userRole.setStatus(Constants.PERSISTENCE_STATUS);
+                userRoleMapper.insert(userRole);
+            }
+
         } else {
             BaseDomain.editLog(user, userId);
             userMapper.updateByPrimaryKeySelective(user);
@@ -67,9 +79,34 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     public boolean delUser(String userId) {
+        //删除用户角色映射
         List<UserRole> urList = userRoleMapper.findAllByUserId(userId);
-        //TODO
-        return userMapper.deleteByPrimaryKey(userId) > 0;
+        for (UserRole userRole : urList) {
+            userRoleMapper.deleteByPrimaryKey(userRole.getUrId());
+        }
+
+        //删除用户权限映射
+        List<UserPmsn> upList = userPmsnMapper.findAllByUserId(userId);
+        for (UserPmsn userPmsn : upList) {
+            userPmsnMapper.deleteByPrimaryKey(userPmsn.getUpmId());
+        }
+
+        //删除用户岗位映射
+        List<UserPost> userPostList = userPostMapper.findAllByUserId(userId);
+        for (UserPost userPost : userPostList) {
+            userPostMapper.deleteByPrimaryKey(userPost.getUpId());
+        }
+        //删除项目组用户映射
+        List<PrjUser> prjUserList = prjUserMapper.findAllByUserId(userId);
+        for (PrjUser prjUser : prjUserList) {
+            prjUserMapper.deleteByPrimaryKey(prjUser.getPuId());
+        }
+        //删除用户
+
+        User user = userMapper.selectByPrimaryKey(userId);
+        user.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
+        return userMapper.updateByPrimaryKey(user) > 0;
+
     }
 
 
@@ -128,7 +165,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         }
         for (Post post : list) {
             TreeModel tm = new TreeModel();
-            tm.setId(post.getPostId() + "");
+            tm.setId(post.getPostId());
             tm.setIconCls(Constants.DEFAULT_ICON);
             tm.setPid("POST");
             tm.setText(post.getPostName());

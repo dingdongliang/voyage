@@ -71,7 +71,7 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole> implements Us
         //循环处理这些对应记录，逐一放入map中，然后设置该记录为过期，用于标记删除
         for (UserRole userRole : urList) {
             //对于该对应记录来说，互斥的ID当成key处理
-            map.put(userRole.getRoleId() + "", userRole);
+            map.put(userRole.getRoleId(), userRole);
             //设置所有记录过期
             updUserRole(currentUserId, userRole, Constants.PERSISTENCE_DELETE_STATUS);
         }

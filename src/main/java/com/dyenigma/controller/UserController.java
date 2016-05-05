@@ -120,7 +120,7 @@ public class UserController extends BaseController {
         Set<String> idSet = new HashSet<>();
 
         for (Post post : pList) {
-            List<String> perList = userPostService.findByPostId(post.getPostId() + "");
+            List<String> perList = userPostService.findByPostId(post.getPostId());
             //一对多，有重复信息，要使用set
             idSet.addAll(perList.stream().collect(Collectors.toList()));
         }
@@ -139,7 +139,7 @@ public class UserController extends BaseController {
         //循环获取所有公司的下属所有部门
         Set<Division> allDivList = new HashSet<>();
         for (Company co : coList) {
-            List<Division> divList = divService.findDivByCoId(co.getCoId() + "");
+            List<Division> divList = divService.findDivByCoId(co.getCoId());
             //一对多，有重复信息，要使用set
             allDivList.addAll(divList.stream().collect(Collectors.toList()));
         }
@@ -147,7 +147,7 @@ public class UserController extends BaseController {
         //循环获取所有部门下属的所有岗位
         Set<Post> allPostList = new HashSet<>();
         for (Division division : allDivList) {
-            List<Post> pList = postService.finaPostByDiv(division.getDivId() + "");
+            List<Post> pList = postService.finaPostByDiv(division.getDivId());
             //一对多，有重复信息，要使用set
             allPostList.addAll(pList.stream().collect(Collectors.toList()));
         }
@@ -155,7 +155,7 @@ public class UserController extends BaseController {
         //循环获取每个岗位对应的用户，累加，获取总用户ID集合
         Set<String> totalList = new HashSet<>();
         for (Post post : allPostList) {
-            List<String> perList = userPostService.findByPostId(post.getPostId() + "");
+            List<String> perList = userPostService.findByPostId(post.getPostId());
             //一对多，有重复信息，要使用set
             totalList.addAll(perList.stream().collect(Collectors.toList()));
         }
@@ -171,7 +171,7 @@ public class UserController extends BaseController {
         PageUtil pageUtil = new PageUtil((pageNo - 1) * length, length);
         GridModel gridModel = new GridModel();
         gridModel.setRows(userService.findUserByPage(pageUtil, totalList));
-        //TODO 这种获取total的方式还是不严谨，待更换
+        //这种获取total的方式还是不严谨，待更换
         gridModel.setTotal(totalList == null ? 0L : totalList.size());
         return gridModel;
 

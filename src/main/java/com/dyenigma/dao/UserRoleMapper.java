@@ -14,4 +14,6 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
      * return:java.util.List<com.dyenigma.entity.UserRole>
      */
     List<UserRole> findAllByUserId(String userId);
+
+    List<UserRole> findAllByRoleId(String roleId);
 }

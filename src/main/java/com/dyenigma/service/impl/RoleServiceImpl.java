@@ -1,9 +1,6 @@
 package com.dyenigma.service.impl;
 
-import com.dyenigma.entity.BaseDomain;
-import com.dyenigma.entity.Permission;
-import com.dyenigma.entity.Role;
-import com.dyenigma.entity.RolePmsn;
+import com.dyenigma.entity.*;
 import com.dyenigma.service.RoleService;
 import com.dyenigma.utils.Constants;
 import com.dyenigma.utils.PageUtil;
@@ -50,7 +47,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     public boolean persistenceRole(Role role) {
         String userId = Constants.getCurrendUser().getUserId();
 
-        if (StringUtil.isEmpty(role.getRoleId() + "")) {
+        if (StringUtil.isEmpty(role.getRoleId())) {
             BaseDomain.createLog(role, userId);
             role.setStatus(Constants.PERSISTENCE_STATUS);
             role.setRoleId(UUIDUtils.getUUID());
@@ -78,14 +75,34 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Override
     public boolean delRole(String id) {
-        //first，判断是否有角色权限记录
-        List<RolePmsn> iList = rolePmsnMapper.findAllByRoleId(id);
-        if (iList.size() > 0) {
-            return false;
-        } else {
-            //second，判断是否有用户角色记录 TODO
-            //end,都没有，可以删除，否则不能删除。
-            return roleMapper.deleteByPrimaryKey(id) > 0;
+
+        //删除角色权限关联
+        List<RolePmsn> rpList = rolePmsnMapper.findAllByRoleId(id);
+        for (RolePmsn rolePmsn : rpList) {
+            rolePmsnMapper.deleteByPrimaryKey(rolePmsn.getRpId());
         }
+
+        //删除角色岗位关联
+        List<PostRole> prList = postRoleMapper.findAllByRoleId(id);
+        for (PostRole postRole : prList) {
+            postRoleMapper.deleteByPrimaryKey(postRole.getPrId());
+        }
+
+        //删除角色用户关联
+        List<UserRole> urList = userRoleMapper.findAllByRoleId(id);
+        for (UserRole userRole : urList) {
+            userRoleMapper.deleteByPrimaryKey(userRole.getUrId());
+        }
+
+        //删除项目角色关联
+        List<PrjRole> prjRoles = prjRoleMapper.findAllByRoleId(id);
+        for (PrjRole prjRole : prjRoles) {
+            prjRoleMapper.deleteByPrimaryKey(prjRole.getPrId());
+        }
+
+        //删除角色
+        Role role = roleMapper.selectByPrimaryKey(id);
+        role.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
+        return roleMapper.updateByPrimaryKey(role) > 0;
     }
 }

@@ -107,7 +107,8 @@
                 <table>
                     <tr>
                         <th>岗位名称</th>
-                        <td colspan="3"><input id="postName" name="postName" type="text" class="easyui-textbox"/></td>
+                        <td colspan="3"><input id="postName" name="postName" type="text" class="easyui-textbox"
+                                               required="required"/></td>
                     </tr>
                     <tr>
                         <th>描述</th>

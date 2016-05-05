@@ -8,4 +8,6 @@ public interface PostRoleMapper extends BaseMapper<PostRole> {
 
     List<PostRole> findAllByPostId(String postId);
 
+    List<PostRole> findAllByRoleId(String roleId);
+
 }

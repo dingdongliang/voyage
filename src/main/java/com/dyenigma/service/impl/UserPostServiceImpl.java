@@ -61,7 +61,7 @@ public class UserPostServiceImpl extends BaseServiceImpl<UserPost> implements Us
         //循环处理这些对应记录，逐一放入map中，然后设置该记录为过期，用于标记删除
         for (UserPost userPost : urList) {
             //对于该对应记录来说，互斥的ID当成key处理
-            map.put(userPost.getPostId() + "", userPost);
+            map.put(userPost.getPostId(), userPost);
             //设置所有记录过期
             updUserPost(currentUserId, userPost, Constants.PERSISTENCE_DELETE_STATUS);
         }

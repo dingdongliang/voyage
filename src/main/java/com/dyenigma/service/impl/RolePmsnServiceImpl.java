@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * topic
@@ -103,4 +100,38 @@ public class RolePmsnServiceImpl extends BaseServiceImpl<RolePmsn> implements Ro
         rolePmsnMapper.updateByPrimaryKeySelective(rolePermission);
     }
 
+    @Override
+    public boolean setDefaultRole(String roleId) {
+        String userId = Constants.getCurrendUser().getUserId();
+
+        //获取所有的默认权限
+        List<Permission> pList = permissionMapper.findAllDefault();
+        //获取默认权限的父节点
+        Set<Permission> pSet = new HashSet<>();
+        for (Permission permission : pList) {
+            pSet.add(permission);
+            getPrntPmsn(pSet, permission);
+        }
+        //把所有的权限节点映射到角色上
+        for (Permission pmsn : pSet) {
+            RolePmsn rolePmsn = new RolePmsn();
+            BaseDomain.createLog(rolePmsn, userId);
+            rolePmsn.setRpId(UUIDUtils.getUUID());
+            rolePmsn.setRoleId(roleId);
+            rolePmsn.setPmsnId(pmsn.getPmsnId());
+            rolePmsn.setStatus(Constants.PERSISTENCE_STATUS);
+            rolePmsnMapper.insert(rolePmsn);
+        }
+
+        return true;
+    }
+
+    private void getPrntPmsn(Set<Permission> pSet, Permission pmsn) {
+        String pId = pmsn.getPrntId();
+        if (!"0".equals(pId)) {
+            Permission prntPmsn = permissionMapper.selectByPrimaryKey(pId);
+            pSet.add(prntPmsn);
+            getPrntPmsn(pSet, prntPmsn);
+        }
+    }
 }

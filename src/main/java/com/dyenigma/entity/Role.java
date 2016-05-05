@@ -11,6 +11,16 @@ public class Role extends BaseDomain {
 
     private String status;
 
+    private String isDefault;
+
+    public String getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(String isDefault) {
+        this.isDefault = isDefault;
+    }
+
     public String getRoleId() {
         return roleId;
     }

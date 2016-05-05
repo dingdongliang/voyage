@@ -1,9 +1,6 @@
 package com.dyenigma.service.impl;
 
-import com.dyenigma.entity.BaseDomain;
-import com.dyenigma.entity.Company;
-import com.dyenigma.entity.Division;
-import com.dyenigma.entity.Post;
+import com.dyenigma.entity.*;
 import com.dyenigma.model.TreeModel;
 import com.dyenigma.service.PostService;
 import com.dyenigma.utils.Constants;
@@ -48,7 +45,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements PostServic
     @Override
     public Boolean persistencePost(Post post) {
         String userId = Constants.getCurrendUser().getUserId();
-        if (StringUtil.isEmpty(post.getPostId() + "")) {
+        if (StringUtil.isEmpty(post.getPostId())) {
             BaseDomain.createLog(post, userId);
             post.setStatus(Constants.PERSISTENCE_STATUS);
             post.setPostId(UUIDUtils.getUUID());
@@ -106,7 +103,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements PostServic
     private void addDivToCo(List<Division> list, List<TreeModel> childList) {
         for (Division div : list) {
             TreeModel tm = new TreeModel();
-            tm.setId(div.getDivId() + "");
+            tm.setId(div.getDivId());
             tm.setIconCls(div.getIconCls());
             tm.setPid("DIV");
             tm.setText(div.getDivName());
@@ -122,14 +119,31 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements PostServic
         list.stream().filter(co -> id.equals(co.getPrntId())).forEach(co -> {
             TreeModel menu = new TreeModel();
             menu.setState(Constants.TREE_STATUS_OPEN); //这里必须关闭节点，否则会出现无限节点
-            menu.setId(co.getCoId() + "");
+            menu.setId(co.getCoId());
             menu.setPid("0".equals(co.getPrntId()) ? "" : co.getPrntId());
             menu.setIconCls(co.getIconCls());
             menu.setText(co.getCoName());
             menu.setChildren(coToTree(co.getCoId(), list));
             menuList.add(menu);
-
         });
         return menuList;
+    }
+
+    @Override
+    public boolean delPostById(String postId) {
+        //先检查岗位下是否有用户，判断能否删除岗位
+        List<UserPost> upList = userPostMapper.findByPostId(postId);
+        if (upList.size() > 0) {
+            return false;
+        } else {
+            //没有用户的岗位可以删除，首先删除岗位角色的对应关系，然后删除岗位
+            List<PostRole> prList = postRoleMapper.findAllByPostId(postId);
+            for (PostRole postRole : prList) {
+                postRoleMapper.deleteByPrimaryKey(postRole.getPrId());
+            }
+            Post post = postMapper.selectByPrimaryKey(postId);
+            post.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
+            return postMapper.updateByPrimaryKey(post) > 0;
+        }
     }
 }

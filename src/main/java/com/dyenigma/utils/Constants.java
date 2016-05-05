@@ -41,7 +41,7 @@ public class Constants {
     public static final String AUTHENTICATION_EXCEPTION = "您没有授权!";
     public static final String UNKNOWN_EXCEPTION = "出现未知异常,请与系统管理员联系!";
     public static final String TREE_GRID_ADD_STATUS = "add";
-    public static final String POST_DATA_SUCCESS = "数据更新成功!";
+    public static final String POST_DATA_SUCCESS = "操作成功!";
     public static final String POST_DATA_FAIL = "提交失败!";
     public static final String GET_SQL_LIKE = "%";
 

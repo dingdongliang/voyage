@@ -5,6 +5,8 @@
   Time: 8:24
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%
@@ -17,13 +19,7 @@
 <head>
     <base href="<%=basePath%>"/>
     <title>公司管理</title>
-    <script type="text/javascript" src="resources/public/js/jquery.js"></script>
-    <link href="resources/core/css/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="resources/public/css/easyui.css"/>
-    <link rel="stylesheet" type="text/css" href="resources/public/css/icon.css"/>
-    <script type="text/javascript" src="resources/public/js/jquery.easyui.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="resources/check/css/common.css"/>
-    <script type="text/javascript" src="resources/check/js/jqueryUtil.js"></script>
+    <tags:include/>
     <script type="text/javascript">
         var $dg;
         var $grid;
@@ -119,7 +115,7 @@
                         text: '保存',
                         iconCls: 'icon-yes',
                         handler: function () {
-                            $.modalDialog.openner = $grid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
+                            $.modalDialog.openner = $grid;
                             var f = $.modalDialog.handler.find("#form");
                             f.submit();
                         }
@@ -151,7 +147,7 @@
                             text: '编辑',
                             iconCls: 'icon-yes',
                             handler: function () {
-                                $.modalDialog.openner = $grid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
+                                $.modalDialog.openner = $grid;
                                 var f = $.modalDialog.handler.find("#form");
                                 f.submit();
                             }
@@ -177,15 +173,16 @@
             $("#delComp").click(function () {
                 var row = $dg.treegrid('getSelected');
                 if (row) {
-                    var rowIndex = $dg.datagrid('getRowIndex', row);
                     $.messager.confirm("提示", "确定要删除记录吗?", function (r) {
                         if (r) {
                             $.ajax({
                                 url: "manage/comp/delComp",
-                                data: "coId=" + row.coId,
+                                data: {
+                                    'coId': row.coId
+                                },
                                 success: function (rsp) {
                                     if (rsp.status) {
-                                        $dg.datagrid('deleteRow', rowIndex);
+                                        $dg.treegrid('remove', row.coId);
                                     }
                                     $.messager.show({
                                         title: rsp.title,

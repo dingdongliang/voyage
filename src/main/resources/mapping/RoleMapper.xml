@@ -11,9 +11,10 @@
         <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
         <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
         <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+        <result column="IS_DEFAULT" property="isDefault" jdbcType="CHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ROLE_ID, ROLE_NAME, ROLE_DESC, SORT, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+        ROLE_ID, ROLE_NAME, ROLE_DESC, SORT, STATUS, CREATED, LASTMOD, CREATER, MODIFYER,IS_DEFAULT
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
@@ -28,11 +29,12 @@
     <insert id="insert" parameterType="com.dyenigma.entity.Role">
         insert into sys_role (ROLE_ID, ROLE_NAME, ROLE_DESC,
         SORT, STATUS, CREATED,
-        LASTMOD, CREATER, MODIFYER
+        LASTMOD, CREATER, MODIFYER,IS_DEFAULT
         )
         values (#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleDesc,jdbcType=VARCHAR},
         #{sort,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP},
-        #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR}
+        #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR},
+        #{isDefault,jdbcType=CHAR}
         )
     </insert>
     <insert id="insertSelective" parameterType="com.dyenigma.entity.Role">
@@ -65,6 +67,9 @@
             <if test="modifyer != null">
                 MODIFYER,
             </if>
+            <if test="modifyer != null">
+                IS_DEFAULT,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="roleId != null">
@@ -93,6 +98,9 @@
             </if>
             <if test="modifyer != null">
                 #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="isDefault != null">
+                #{isDefault,jdbcType=CHAR},
             </if>
         </trim>
     </insert>
@@ -123,6 +131,9 @@
             <if test="modifyer != null">
                 MODIFYER = #{modifyer,jdbcType=VARCHAR},
             </if>
+            <if test="isDefault != null">
+                IS_DEFAULT = #{isDefault,jdbcType=CHAR},
+            </if>
         </set>
         where ROLE_ID = #{roleId,jdbcType=VARCHAR}
     </update>
@@ -135,6 +146,7 @@
         CREATED = #{created,jdbcType=TIMESTAMP},
         LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
         CREATER = #{creater,jdbcType=VARCHAR},
+        IS_DEFAULT = #{isDefault,jdbcType=CHAR},
         MODIFYER = #{modifyer,jdbcType=VARCHAR}
         where ROLE_ID = #{roleId,jdbcType=VARCHAR}
     </update>
@@ -153,5 +165,11 @@
 
     <select id="getCount" resultType="long">
         SELECT COUNT(*) FROM sys_role WHERE STATUS = 'E'
+    </select>
+
+    <select id="findDefaultRole" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role where IS_DEFAULT='Y' and status='E'
     </select>
 </mapper>

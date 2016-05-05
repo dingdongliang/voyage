@@ -15,4 +15,6 @@ public interface RoleMapper extends BaseMapper<Role> {
      * return:java.util.List<com.dyenigma.entity.Role>
      */
     List<Role> findAllByPage(PageUtil pageUtil);
+
+    List<Role> findDefaultRole();
 }

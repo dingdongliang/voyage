@@ -117,7 +117,8 @@
                         </td>
                         <th>负责人</th>
                         <td><input id="leader" name="leader" type="text" class="easyui-combobox"
-                                   url="manage/users/findAllUserList" valueField="userId" textField="userName"/></td>
+                                   url="manage/users/findAllUserList" valueField="userId" textField="userName"
+                                   required="required"/></td>
                     </tr>
                     <tr>
                         <th>项目等级</th>

@@ -35,15 +35,6 @@ public interface PermissionMapper extends BaseMapper<Permission> {
      */
     List<Permission> findByPid(String pid);
 
-    /**
-     * Description: 更新权限信息为过期
-     * Name:updateById
-     * Author:Dyenigma
-     * Time:2016/4/23 10:46
-     * param:[id]
-     * return:int
-     */
-    int updateById(String id);
 
     /**
      * Description: 获取所有可添加子项的权限信息

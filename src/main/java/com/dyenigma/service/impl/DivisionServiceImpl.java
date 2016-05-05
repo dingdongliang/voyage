@@ -11,6 +11,7 @@ package com.dyenigma.service.impl;
 
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.Division;
+import com.dyenigma.entity.Post;
 import com.dyenigma.model.TreeModel;
 import com.dyenigma.service.DivisionService;
 import com.dyenigma.utils.Constants;
@@ -39,10 +40,15 @@ public class DivisionServiceImpl extends BaseServiceImpl<Division> implements
 
     @Override
     public boolean deleteById(String id) {
-
-        Division divi = divisionMapper.selectByPrimaryKey(id);
-        divi.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-        return divisionMapper.updateByPrimaryKey(divi) > 0;
+        //如果部门下面有岗位，不能删除
+        List<Post> pList = postMapper.findPostByDiv(id);
+        if (pList.size() > 0) {
+            return false;
+        } else {
+            Division divi = divisionMapper.selectByPrimaryKey(id);
+            divi.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
+            return divisionMapper.updateByPrimaryKey(divi) > 0;
+        }
     }
 
     @Override
@@ -51,7 +57,7 @@ public class DivisionServiceImpl extends BaseServiceImpl<Division> implements
         List<TreeModel> tList = new ArrayList<>();
         for (Division divi : organList) {
             TreeModel treeModel = new TreeModel();
-            treeModel.setId(divi.getDivId() + "");
+            treeModel.setId(divi.getDivId());
             treeModel.setPid("");
             treeModel.setText(divi.getDivName()); //注意部门管理修改为combotree形式
             treeModel.setIconCls(divi.getIconCls());

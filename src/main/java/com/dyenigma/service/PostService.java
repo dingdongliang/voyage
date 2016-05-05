@@ -42,4 +42,6 @@ public interface PostService extends BaseMapper<Post> {
      * return:java.util.List<com.dyenigma.model.TreeModel>
      */
     List<TreeModel> getCoDivList();
+
+    boolean delPostById(String postId);
 }

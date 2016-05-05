@@ -131,7 +131,7 @@
                         <th>菜单名称</th>
                         <td><input name="pmsnName" id="pmsnName" placeholder="请输入菜单名称"
                                    class="easyui-textbox easyui-validatebox"
-                                   type="text"/></td>
+                                   type="text" required="required"/></td>
                         <th>父菜单名称</th>
                         <td>
                             <input name="prntId" id="prntId" class="easyui-combotree"
@@ -140,8 +140,7 @@
                     </tr>
                     <tr>
                         <th>排序编码</th>
-                        <td><input name="sort" id="sort" type="text" class="easyui-textbox easyui-validatebox"
-                                   required="required"/></td>
+                        <td><input name="sort" id="sort" type="text" class="easyui-textbox easyui-validatebox"/></td>
                         <th>菜单图标</th>
                         <td><input id="iconCls" class="easyui-combobox" name="iconCls" type="text"/></td>
                     </tr>

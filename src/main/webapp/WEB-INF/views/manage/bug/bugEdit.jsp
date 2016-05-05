@@ -15,12 +15,11 @@
 <script type="text/javascript">
     $(function () {
         $("#description").xheditor({
-            //width:$(this).width()-900,
-            //height:$(this).height()-900,
+
             tools: 'full',
             html5Upload: true,
             upMultiple: 4,
-            upLinkUrl: 'bug/bugAction!upload.action',
+            upLinkUrl: ' ',
             upLinkExt: 'zip,rar,txt,doc,docx,xls,xlsx',
             upImgUrl: 'bug/bugAction!upload.action',
             upImgExt: 'jpg,jpeg,gif,png',
@@ -33,7 +32,7 @@
             }
         });
         $("#form").form({
-            url: "bug/bugAction!addBug.action",
+            url: " ",
             onSubmit: function () {
                 parent.$.messager.progress({
                     title: '提示',

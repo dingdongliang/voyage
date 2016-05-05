@@ -27,4 +27,6 @@ public interface RolePmsnService extends BaseService<RolePmsn> {
      */
     boolean savePermission(String roleId, String checkedIds);
 
+    boolean setDefaultRole(String roleId);
+
 }

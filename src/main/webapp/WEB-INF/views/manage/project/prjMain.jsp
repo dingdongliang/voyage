@@ -1,3 +1,4 @@
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%
@@ -11,13 +12,7 @@
     <base href="<%=basePath%>"/>
     <meta charset="UTF-8">
     <title>项目组管理</title>
-    <script type="text/javascript" src="resources/public/js/jquery.js"></script>
-    <link href="resources/core/css/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="resources/public/css/easyui.css">
-    <link rel="stylesheet" type="text/css" href="resources/public/css/icon.css">
-    <script type="text/javascript" src="resources/public/js/jquery.easyui.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="resources/check/css/common.css">
-    <script type="text/javascript" src="resources/check/js/jqueryUtil.js"></script>
+    <tags:include/>
     <script type="text/javascript">
         var $dg;
         var $grid;
@@ -90,7 +85,7 @@
                 var row = $dg.treegrid('getSelected');
                 if (row) {
                     $.modalDialog({
-                        title: "编辑菜单",
+                        title: "编辑项目组",
                         width: 600,
                         height: 400,
                         href: "/manage/project/prjEdit",
@@ -390,7 +385,6 @@
         </ul>
     </div>
     <table title="项目组信息" class="easyui-treegrid" id="dg" data-options="toolbar: '#tb'">
-        <thead>
         <tr>
             <th data-options="field:'prjName'" width="20%" align="center">项目名称</th>
             <th data-options="field:'leader'" width="15%" align="center">项目负责人</th>
@@ -398,7 +392,6 @@
             <th data-options="field:'level'" width="10%" align="center">项目级别</th>
             <th data-options="field:'prjDesc'" width="35%" align="center">项目描述</th>
         </tr>
-        </thead>
     </table>
 
     <div class="tip">

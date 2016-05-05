@@ -133,4 +133,11 @@
         WHERE STATUS = 'E' AND USER_ID = #{userId,jdbcType=VARCHAR}
     </select>
 
+    <select id="findAllByRoleId" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_user_role
+        WHERE STATUS = 'E' AND ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+
 </mapper>
