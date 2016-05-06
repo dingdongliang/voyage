@@ -21,11 +21,10 @@
     <title>公司管理</title>
     <tags:include/>
     <script type="text/javascript">
-        var $dg;
-        var $grid;
+
         $(function () {
-            $dg = $("#dg");
-            $grid = $dg.treegrid({
+
+            $("#dg").treegrid({
                 url: "manage/comp/findAllCoList",
                 width: 'auto',
                 height: $(this).height() - 17,
@@ -36,66 +35,12 @@
                 border: true,
                 idField: 'coId',
                 treeField: 'coName',
-                columns: [[{
-                    field: 'coName',
-                    title: '公司名称',
-                    align: 'center',
-                    width: parseInt($(this).width() * 0.1),
-                    editor: {type: 'validatebox', options: {required: true}}
-                }, {
-                    field: 'coPhone',
-                    title: '公司电话',
-                    width: parseInt($(this).width() * 0.1),
-                    align: 'center',
-                    editor: "validatebox"
-                }, {
-                    field: 'prntName',
-                    title: '上级公司',
-                    width: parseInt($(this).width() * 0.1),
-                    align: 'center',
-                    editor: "validatebox"
-                }, {
-                    field: 'coFax',
-                    title: '传真',
-                    width: parseInt($(this).width() * 0.1),
-                    align: 'center',
-                    editor: "text"
-                }, {
-                    field: 'coAdr',
-                    title: '地址',
-                    width: parseInt($(this).width() * 0.1),
-                    align: 'center',
-                    editor: "text"
-                }, {
-                    field: 'coZip',
-                    title: '邮政编码',
-                    width: parseInt($(this).width() * 0.1),
-                    align: 'center',
-                    editor: "text"
-                }, {
-                    field: 'coEmail',
-                    title: '邮箱',
-                    width: parseInt($(this).width() * 0.1),
-                    align: 'center',
-                    editor: {type: 'validatebox', options: {required: true, validType: 'email'}}
-                }, {
-                    field: 'contact',
-                    title: '联系人',
-                    width: parseInt($(this).width() * 0.1),
-                    align: 'center',
-                    editor: "text"
-                }, {
-                    field: 'coDesc',
-                    title: '描述',
-                    width: parseInt($(this).width() * 0.15),
-                    align: 'left',
-                    editor: "text"
-                }]], toolbar: '#tb'
+                toolbar: '#tb'
             });
 
             //弹窗增加公司
             $("#addComp").click(function () {
-                var row = $dg.treegrid('getSelected');
+                var row = $("#dg").treegrid('getSelected');
                 $.modalDialog({
                     title: '添加公司',
                     width: 600,
@@ -115,7 +60,7 @@
                         text: '保存',
                         iconCls: 'icon-yes',
                         handler: function () {
-                            $.modalDialog.openner = $grid;
+                            $.modalDialog.openner = $("#dg").treegrid();
                             var f = $.modalDialog.handler.find("#form");
                             f.submit();
                         }
@@ -132,7 +77,7 @@
 
             //弹窗修改公司
             $("#updateComp").click(function () {
-                var row = $dg.treegrid('getSelected');
+                var row = $("#dg").treegrid('getSelected');
                 if (row) {
                     $.modalDialog({
                         title: '编辑公司',
@@ -147,7 +92,7 @@
                             text: '编辑',
                             iconCls: 'icon-yes',
                             handler: function () {
-                                $.modalDialog.openner = $grid;
+                                $.modalDialog.openner = $("#dg").treegrid();
                                 var f = $.modalDialog.handler.find("#form");
                                 f.submit();
                             }
@@ -171,7 +116,7 @@
             });
 
             $("#delComp").click(function () {
-                var row = $dg.treegrid('getSelected');
+                var row = $("#dg").treegrid('getSelected');
                 if (row) {
                     $.messager.confirm("提示", "确定要删除记录吗?", function (r) {
                         if (r) {
@@ -182,7 +127,7 @@
                                 },
                                 success: function (rsp) {
                                     if (rsp.status) {
-                                        $dg.treegrid('remove', row.coId);
+                                        $("#dg").treegrid('remove', row.coId);
                                     }
                                     $.messager.show({
                                         title: rsp.title,
@@ -203,7 +148,7 @@
             });
 
             $("#toExcel").click(function () {
-                var row = $dg.treegrid('getSelected');
+                var row = $("#dg").treegrid('getSelected');
                 if (row) {
                     window.location.href = "manage/comp/excelExport/" + row.coId;
                 } else {
@@ -242,8 +187,21 @@
             </li>
         </ul>
     </div>
-
-    <table id="dg" title="公司管理"></table>
+    <table id="dg" title="公司管理" class="easyui-treegrid" data-options="toolbar: '#tb'">
+        <thead>
+        <tr>
+            <th data-options="field:'coName'" width="12%" align="center">公司名称</th>
+            <th data-options="field:'coPhone'" width="10%" align="center">公司电话</th>
+            <th data-options="field:'prntName'" width="10%" align="center">上级公司</th>
+            <th data-options="field:'coFax'" width="10%" align="center">传真</th>
+            <th data-options="field:'coAdr'" width="15%" align="center">公司地址</th>
+            <th data-options="field:'coZip'" width="8%" align="center">邮政编码</th>
+            <th data-options="field:'coEmail'" width="10%" align="center">公司邮箱</th>
+            <th data-options="field:'contact'" width="10%" align="center">联系人</th>
+            <th data-options="field:'coDesc'" width="15%" align="center">描述</th>
+        </tr>
+        </thead>
+    </table>
 </div>
 </body>
 </html>

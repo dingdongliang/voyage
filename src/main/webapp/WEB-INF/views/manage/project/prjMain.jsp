@@ -385,6 +385,7 @@
         </ul>
     </div>
     <table title="项目组信息" class="easyui-treegrid" id="dg" data-options="toolbar: '#tb'">
+        <thead>
         <tr>
             <th data-options="field:'prjName'" width="20%" align="center">项目名称</th>
             <th data-options="field:'leader'" width="15%" align="center">项目负责人</th>
@@ -392,6 +393,7 @@
             <th data-options="field:'level'" width="10%" align="center">项目级别</th>
             <th data-options="field:'prjDesc'" width="35%" align="center">项目描述</th>
         </tr>
+        </thead>
     </table>
 
     <div class="tip">

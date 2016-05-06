@@ -101,6 +101,9 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
             company.setCoId(UUIDUtils.getUUID());
             company.setState(Constants.TREE_STATUS_CLOSED);
             company.setIconCls(Constants.COMPANY_ICON);
+            if (StringUtil.isEmpty(company.getPrntId())) {
+                company.setPrntId("0");
+            }
             companyMapper.insert(company);
         } else {
             BaseDomain.editLog(company, userId);

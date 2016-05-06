@@ -299,7 +299,8 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('66af6a49af404a6da7c88b07fb857967', '超级管理员', '具有所有的有效权限', '1', 'E', '2016-04-26 08:20:59', '2016-05-03 13:27:30', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322', 'N');
-INSERT INTO `sys_role` VALUES ('d9647a7401374edd849ff8baeec8e491', '通用角色', '所有用户都有的角色，里面包含通用的权限', '2', 'E', '2016-05-05 16:21:40', '2016-05-05 16:21:40', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322', 'N');
+INSERT INTO `sys_role` VALUES ('d9647a7401374edd849ff8baeec8e491', '通用角色', '所有用户都有的角色，里面包含通用的权限', '2', 'E',
+'2016-05-05 16:21:40', '2016-05-05 16:21:40', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322', 'Y');
 
 -- ----------------------------
 -- Table structure for sys_role_pmsn
