@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2016-05-05 18:51:54
+Date: 2016-05-06 18:30:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -48,6 +48,7 @@ CREATE TABLE `sys_company` (
 -- ----------------------------
 -- Records of sys_company
 -- ----------------------------
+INSERT INTO `sys_company` VALUES ('5f33f03536804f189c4c65b050cb1073', '称心如意集团公司', '0', '', 'closed', 'icon-company', '15981852507', '', '河南郑州', '450000', null, 'dyenigma@163.com', 'dyenigma', 'E', 'dyenigma', '', '', '如意如意,称我心意,快快显灵!', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322', '2016-05-06 08:17:43', '2016-05-06 17:00:26');
 
 -- ----------------------------
 -- Table structure for sys_division
@@ -299,8 +300,7 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('66af6a49af404a6da7c88b07fb857967', '超级管理员', '具有所有的有效权限', '1', 'E', '2016-04-26 08:20:59', '2016-05-03 13:27:30', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322', 'N');
-INSERT INTO `sys_role` VALUES ('d9647a7401374edd849ff8baeec8e491', '通用角色', '所有用户都有的角色，里面包含通用的权限', '2', 'E',
-'2016-05-05 16:21:40', '2016-05-05 16:21:40', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322', 'Y');
+INSERT INTO `sys_role` VALUES ('d9647a7401374edd849ff8baeec8e491', '通用角色', '所有用户都有的角色，里面包含通用的权限', '2', 'E', '2016-05-05 16:21:40', '2016-05-05 16:21:40', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322', 'Y');
 
 -- ----------------------------
 -- Table structure for sys_role_pmsn
@@ -413,7 +413,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('9e6706baa946413b878d4fbaa6ec4322', '超级管理员', 'system', '54B53072540EEEB8F8E9343E71F28176', 'dyenigma@163.com', '15981852507', '2016-04-02 09:21:34', '2016-05-05 17:33:50', '127.0.0.1', '2016-04-28 09:21:54', '83', 'E', '超级管理员', '0', '0', '2016-04-01 09:22:26', '2016-04-28 09:22:30', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322');
+INSERT INTO `sys_user` VALUES ('9e6706baa946413b878d4fbaa6ec4322', '超级管理员', 'system', '54B53072540EEEB8F8E9343E71F28176', 'dyenigma@163.com', '15981852507', '2016-04-02 09:21:34', '2016-05-06 15:10:34', '127.0.0.1', '2016-04-28 09:21:54', '83', 'E', '超级管理员', '0', '0', '2016-04-01 09:22:26', '2016-04-28 09:22:30', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322');
 
 -- ----------------------------
 -- Table structure for sys_user_pmsn

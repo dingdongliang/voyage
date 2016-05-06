@@ -126,7 +126,7 @@
                     <td><input name="coName" id="coName" class="easyui-textbox easyui-validatebox"
                                required="required" type="text"/></td>
                     <th>负责人</th>
-                    <td><input id="manager" name="manager" type="text" class="easyui-textbox easyui-validatebox"/></td>
+                    <td><input id="manager" name="manager" type="text" class="easyui-textbox"/></td>
                 </tr>
                 <tr>
                     <th>上级公司</th>
@@ -136,39 +136,40 @@
                         <input name="prntName" id="prntName" type="hidden"/></td>
                     </td>
                     <th>排序</th>
-                    <td><input id="sort" name="sort" type="text" class="easyui-textbox easyui-validatebox"/></td>
+                    <td><input id="sort" name="sort" type="text" class="easyui-textbox"/></td>
                 </tr>
                 <tr>
                     <th>公司地址</th>
                     <td><input id="coAdr" name="coAdr" type="text"
-                               class="easyui-textbox easyui-validatebox"/></td>
+                               class="easyui-textbox"/></td>
                     <th>邮编</th>
                     <td><input id="coZip" name="coZip" type="text"
-                               class="easyui-textbox easyui-validatebox"/></td>
+                               class="easyui-textbox"/></td>
                 </tr>
                 <tr>
                     <th>联系电话</th>
-                    <td><input name="coPhone" id="coPhone" type="text" class="easyui-textbox easyui-validatebox"/></td>
+                    <td><input name="coPhone" id="coPhone" type="text" class="easyui-textbox"/></td>
                     <th>联系人</th>
-                    <td><input id="contact" name="contact" type="text" class="easyui-textbox easyui-validatebox"/></td>
+                    <td><input id="contact" name="contact" type="text" class="easyui-textbox"/></td>
                 </tr>
                 <tr>
                     <th>电子邮箱</th>
-                    <td><input id="coEmail" name="coEmail" type="text" class="easyui-textbox easyui-validatebox"/></td>
+                    <td><input id="coEmail" name="coEmail" type="text" class="easyui-textbox easyui-validatebox"
+                               data-options="validType:'email'"/></td>
                     <th>传真</th>
-                    <td><input name="coFax" id="coFax" type="text" class="easyui-textbox easyui-validatebox"/></td>
+                    <td><input name="coFax" id="coFax" type="text" class="easyui-textbox"/></td>
                 </tr>
                 <tr>
                     <th>开户行</th>
-                    <td><input id="bank" name="bank" type="text" class="easyui-textbox easyui-validatebox"/></td>
+                    <td><input id="bank" name="bank" type="text" class="easyui-textbox"/></td>
                     <th>开户账号</th>
                     <td><input id="bankAcct" name="bankAcct" type="text"
-                               class="easyui-textbox easyui-validatebox"/></td>
+                               class="easyui-textbox"/></td>
                 </tr>
                 <tr>
                     <th>描述</th>
                     <td colspan="3"><textarea class="easyui-textbox" name="coDesc" data-options="multiline:true"
-                                              style="width: 420px;height: 100px;"></textarea></td>
+                                              style="width: 420px;height: 60px;"></textarea></td>
                 </tr>
             </table>
         </form>

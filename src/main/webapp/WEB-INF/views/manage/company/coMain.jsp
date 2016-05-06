@@ -34,8 +34,7 @@
                 striped: true,
                 border: true,
                 idField: 'coId',
-                treeField: 'coName',
-                toolbar: '#tb'
+                treeField: 'coName'
             });
 
             //弹窗增加公司
@@ -190,15 +189,15 @@
     <table id="dg" title="公司管理" class="easyui-treegrid" data-options="toolbar: '#tb'">
         <thead>
         <tr>
-            <th data-options="field:'coName'" width="12%" align="center">公司名称</th>
-            <th data-options="field:'coPhone'" width="10%" align="center">公司电话</th>
-            <th data-options="field:'prntName'" width="10%" align="center">上级公司</th>
-            <th data-options="field:'coFax'" width="10%" align="center">传真</th>
-            <th data-options="field:'coAdr'" width="15%" align="center">公司地址</th>
-            <th data-options="field:'coZip'" width="8%" align="center">邮政编码</th>
-            <th data-options="field:'coEmail'" width="10%" align="center">公司邮箱</th>
-            <th data-options="field:'contact'" width="10%" align="center">联系人</th>
-            <th data-options="field:'coDesc'" width="15%" align="center">描述</th>
+            <th data-options="field:'coName',width:150,align:'center'">公司名称</th>
+            <th data-options="field:'coPhone',width:100,align:'center'">公司电话</th>
+            <th data-options="field:'prntName',width:150,align:'center'">上级公司</th>
+            <th data-options="field:'coFax',width:100,align:'center'">传真</th>
+            <th data-options="field:'coAdr',width:200,align:'center'">公司地址</th>
+            <th data-options="field:'coZip',width:80,align:'center'">邮政编码</th>
+            <th data-options="field:'coEmail',width:100,align:'center'">公司邮箱</th>
+            <th data-options="field:'contact',width:80,align:'center'">联系人</th>
+            <th data-options="field:'coDesc',width:200,align:'center'">描述</th>
         </tr>
         </thead>
     </table>
