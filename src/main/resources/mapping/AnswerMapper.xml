@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyenigma.dao.AnswerMapper">
+    <resultMap id="BaseResultMap" type="com.dyenigma.entity.Answer">
+        <id column="QSTN_ID" property="qstnId" jdbcType="VARCHAR"/>
+        <result column="ANSR_ID" property="ansrId" jdbcType="VARCHAR"/>
+        <result column="ANSR_DESC" property="ansrDesc" jdbcType="VARCHAR"/>
+        <result column="ANSR_AGREE" property="ansrAgree" jdbcType="INTEGER"/>
+        <result column="ANSR_OPOS" property="ansrOpos" jdbcType="INTEGER"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        QSTN_ID, ANSR_ID, ANSR_DESC, ANSR_AGREE, ANSR_OPOS, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from gen_answer
+        where QSTN_ID = #{qstnId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from gen_answer
+        where QSTN_ID = #{qstnId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.dyenigma.entity.Answer">
+        insert into gen_answer (QSTN_ID, ANSR_ID, ANSR_DESC,
+        ANSR_AGREE, ANSR_OPOS, CREATED,
+        LASTMOD, CREATER, MODIFYER
+        )
+        values (#{qstnId,jdbcType=VARCHAR}, #{ansrId,jdbcType=VARCHAR}, #{ansrDesc,jdbcType=VARCHAR},
+        #{ansrAgree,jdbcType=INTEGER}, #{ansrOpos,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP},
+        #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.dyenigma.entity.Answer">
+        insert into gen_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qstnId != null">
+                QSTN_ID,
+            </if>
+            <if test="ansrId != null">
+                ANSR_ID,
+            </if>
+            <if test="ansrDesc != null">
+                ANSR_DESC,
+            </if>
+            <if test="ansrAgree != null">
+                ANSR_AGREE,
+            </if>
+            <if test="ansrOpos != null">
+                ANSR_OPOS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="qstnId != null">
+                #{qstnId,jdbcType=VARCHAR},
+            </if>
+            <if test="ansrId != null">
+                #{ansrId,jdbcType=VARCHAR},
+            </if>
+            <if test="ansrDesc != null">
+                #{ansrDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="ansrAgree != null">
+                #{ansrAgree,jdbcType=INTEGER},
+            </if>
+            <if test="ansrOpos != null">
+                #{ansrOpos,jdbcType=INTEGER},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.Answer">
+        update gen_answer
+        <set>
+            <if test="ansrId != null">
+                ANSR_ID = #{ansrId,jdbcType=VARCHAR},
+            </if>
+            <if test="ansrDesc != null">
+                ANSR_DESC = #{ansrDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="ansrAgree != null">
+                ANSR_AGREE = #{ansrAgree,jdbcType=INTEGER},
+            </if>
+            <if test="ansrOpos != null">
+                ANSR_OPOS = #{ansrOpos,jdbcType=INTEGER},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where QSTN_ID = #{qstnId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.Answer">
+        update gen_answer
+        set ANSR_ID = #{ansrId,jdbcType=VARCHAR},
+        ANSR_DESC = #{ansrDesc,jdbcType=VARCHAR},
+        ANSR_AGREE = #{ansrAgree,jdbcType=INTEGER},
+        ANSR_OPOS = #{ansrOpos,jdbcType=INTEGER},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        where QSTN_ID = #{qstnId,jdbcType=VARCHAR}
+    </update>
+</mapper>

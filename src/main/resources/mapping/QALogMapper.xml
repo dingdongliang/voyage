@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyenigma.dao.QALogMapper">
+    <resultMap id="BaseResultMap" type="com.dyenigma.entity.QALog">
+        <id column="LOG_ID" property="logId" jdbcType="VARCHAR"/>
+        <result column="QA_TYPE" property="qaType" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        LOG_ID, QA_TYPE, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from gen_qa_log
+        where LOG_ID = #{logId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from gen_qa_log
+        where LOG_ID = #{logId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.dyenigma.entity.QALog">
+        insert into gen_qa_log (LOG_ID, QA_TYPE, CREATED,
+        LASTMOD, CREATER, MODIFYER
+        )
+        values (#{logId,jdbcType=VARCHAR}, #{qaType,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP},
+        #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.dyenigma.entity.QALog">
+        insert into gen_qa_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logId != null">
+                LOG_ID,
+            </if>
+            <if test="qaType != null">
+                QA_TYPE,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="logId != null">
+                #{logId,jdbcType=VARCHAR},
+            </if>
+            <if test="qaType != null">
+                #{qaType,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.QALog">
+        update gen_qa_log
+        <set>
+            <if test="qaType != null">
+                QA_TYPE = #{qaType,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where LOG_ID = #{logId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.QALog">
+        update gen_qa_log
+        set QA_TYPE = #{qaType,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        where LOG_ID = #{logId,jdbcType=VARCHAR}
+    </update>
+</mapper>

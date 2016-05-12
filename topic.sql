@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_company`;
 CREATE TABLE `sys_company` (
-  `CO_ID` varchar(32) NOT NULL COMMENT '公司自增ID',
+  `CO_ID` varchar(32) NOT NULL COMMENT '公司ID',
   `CO_NAME` varchar(100) NOT NULL COMMENT '公司名称',
   `PRNT_ID` varchar(32) DEFAULT NULL COMMENT '父公司ID',
   `PRNT_NAME` varchar(100) DEFAULT NULL COMMENT '父公司名称',
@@ -55,7 +55,7 @@ INSERT INTO `sys_company` VALUES ('5f33f03536804f189c4c65b050cb1073', '称心如
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_division`;
 CREATE TABLE `sys_division` (
-  `DIV_ID` varchar(32) NOT NULL COMMENT '部门自增ID',
+  `DIV_ID` varchar(32) NOT NULL COMMENT '部门ID',
   `DIV_NAME` varchar(100) NOT NULL COMMENT '部门名称',
   `MANAGER` varchar(32) DEFAULT NULL COMMENT '部门领导对应的USERID',
   `DIV_PHONE` varchar(50) DEFAULT NULL COMMENT '部门电话',
@@ -82,7 +82,7 @@ CREATE TABLE `sys_division` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE `sys_permission` (
-  `PMSN_ID` varchar(32) NOT NULL COMMENT '权限自增ID',
+  `PMSN_ID` varchar(32) NOT NULL COMMENT '权限ID',
   `PMSN_NAME` varchar(100) NOT NULL COMMENT '权限名称',
   `PRNT_ID` varchar(32) DEFAULT NULL COMMENT '父权限ID',
   `PRNT_NAME` varchar(100) DEFAULT NULL COMMENT '父权限名称',
@@ -166,7 +166,7 @@ INSERT INTO `sys_permission` VALUES ('fc6a211b4cf64882a7a405f894d4262e', '手动
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post` (
-  `POST_ID` varchar(32) NOT NULL COMMENT '岗位自增ID',
+  `POST_ID` varchar(32) NOT NULL COMMENT '岗位ID',
   `POST_NAME` varchar(100) NOT NULL COMMENT '岗位名称',
   `DIV_ID` varchar(32) DEFAULT NULL COMMENT '部门ID',
   `POST_DESC` varchar(500) DEFAULT NULL COMMENT '备注',
@@ -187,7 +187,7 @@ CREATE TABLE `sys_post` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_post_role`;
 CREATE TABLE `sys_post_role` (
-  `PR_ID` varchar(32) NOT NULL COMMENT '岗位角色配置自增ID',
+  `PR_ID` varchar(32) NOT NULL COMMENT '岗位角色配置ID',
   `ROLE_ID` varchar(32) NOT NULL COMMENT '角色ID',
   `POST_ID` varchar(32) NOT NULL COMMENT '岗位ID',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
@@ -211,7 +211,7 @@ CREATE TABLE `sys_post_role` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_prj_role`;
 CREATE TABLE `sys_prj_role` (
-  `PR_ID` varchar(32) NOT NULL COMMENT '项目组角色配置自增ID',
+  `PR_ID` varchar(32) NOT NULL COMMENT '项目组角色配置ID',
   `PRJ_ID` varchar(32) NOT NULL COMMENT '项目组ID',
   `ROLE_ID` varchar(32) NOT NULL COMMENT '角色ID',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
@@ -235,7 +235,7 @@ CREATE TABLE `sys_prj_role` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_prj_user`;
 CREATE TABLE `sys_prj_user` (
-  `PU_ID` varchar(32) NOT NULL COMMENT '项目成员配置自增ID',
+  `PU_ID` varchar(32) NOT NULL COMMENT '项目成员配置ID',
   `PRJ_ID` varchar(32) NOT NULL COMMENT '项目组ID',
   `USER_ID` varchar(32) NOT NULL COMMENT '用户ID',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
@@ -259,7 +259,7 @@ CREATE TABLE `sys_prj_user` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_project`;
 CREATE TABLE `sys_project` (
-  `PRJ_ID` varchar(32) NOT NULL COMMENT '项目自增ID',
+  `PRJ_ID` varchar(32) NOT NULL COMMENT '项目ID',
   `PRJ_NAME` varchar(100) NOT NULL COMMENT '项目名称',
   `PRJ_DESC` varchar(500) DEFAULT NULL COMMENT '项目描述',
   `LEADER` varchar(32) NOT NULL COMMENT '项目领导',
@@ -283,7 +283,7 @@ CREATE TABLE `sys_project` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
-  `ROLE_ID` varchar(32) NOT NULL COMMENT '角色自增ID',
+  `ROLE_ID` varchar(32) NOT NULL COMMENT '角色ID',
   `ROLE_NAME` varchar(100) NOT NULL COMMENT '角色名称',
   `ROLE_DESC` varchar(500) DEFAULT NULL COMMENT '角色描述',
   `SORT` int(11) DEFAULT NULL COMMENT '排序列',
@@ -307,7 +307,7 @@ INSERT INTO `sys_role` VALUES ('d9647a7401374edd849ff8baeec8e491', '通用角色
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_pmsn`;
 CREATE TABLE `sys_role_pmsn` (
-  `RP_ID` varchar(32) NOT NULL COMMENT '权限角色配置自增ID',
+  `RP_ID` varchar(32) NOT NULL COMMENT '权限角色配置ID',
   `ROLE_ID` varchar(32) NOT NULL COMMENT '角色ID',
   `PMSN_ID` varchar(32) NOT NULL COMMENT '权限ID',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
@@ -388,7 +388,7 @@ INSERT INTO `sys_role_pmsn` VALUES ('fc81ece99f2a449083d07d8c1d1fe5a8', '66af6a4
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `USER_ID` varchar(32) NOT NULL COMMENT '用户自增ID',
+  `USER_ID` varchar(32) NOT NULL COMMENT '用户ID',
   `USER_NAME` varchar(20) NOT NULL COMMENT '用户名称',
   `ACCOUNT` varchar(20) NOT NULL COMMENT '用户账号',
   `PASSWORD` varchar(100) DEFAULT NULL COMMENT '密码',
@@ -420,7 +420,7 @@ INSERT INTO `sys_user` VALUES ('9e6706baa946413b878d4fbaa6ec4322', '超级管理
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_pmsn`;
 CREATE TABLE `sys_user_pmsn` (
-  `UPM_ID` varchar(32) NOT NULL COMMENT '用户权限配置自增ID',
+  `UPM_ID` varchar(32) NOT NULL COMMENT '用户权限配置ID',
   `USER_ID` varchar(32) NOT NULL COMMENT '用户ID',
   `PMSN_ID` varchar(32) NOT NULL COMMENT '权限ID',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
@@ -444,7 +444,7 @@ CREATE TABLE `sys_user_pmsn` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_post`;
 CREATE TABLE `sys_user_post` (
-  `UP_ID` varchar(32) NOT NULL COMMENT '用户岗位配置自增ID',
+  `UP_ID` varchar(32) NOT NULL COMMENT '用户岗位配置ID',
   `USER_ID` varchar(32) NOT NULL COMMENT '角色ID',
   `POST_ID` varchar(32) NOT NULL COMMENT '权限ID',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
@@ -468,7 +468,7 @@ CREATE TABLE `sys_user_post` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
-  `UR_ID` varchar(32) NOT NULL COMMENT '用户角色配置自增ID',
+  `UR_ID` varchar(32) NOT NULL COMMENT '用户角色配置ID',
   `ROLE_ID` varchar(32) NOT NULL COMMENT '角色ID',
   `USER_ID` varchar(32) NOT NULL COMMENT '用户ID',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
@@ -487,3 +487,44 @@ CREATE TABLE `sys_user_role` (
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES ('4ddb7d8eaf694e75b499e1eec9772b7a', '66af6a49af404a6da7c88b07fb857967', '9e6706baa946413b878d4fbaa6ec4322', 'E', '2016-04-29 14:37:05', '2016-04-29 14:41:50', '9e6706baa946413b878d4fbaa6ec4322', '9e6706baa946413b878d4fbaa6ec4322');
+
+DROP TABLE IF EXISTS gen_question;
+CREATE TABLE gen_question (
+  QSTN_ID varchar(32) NOT NULL COMMENT '问题ID',
+  QSTN_KEY varchar(200) NOT NULL COMMENT '问题关键字',
+  QSTN_DESC varchar(5000) DEFAULT NULL COMMENT '问题描述',
+  STATUS char(1) NOT NULL DEFAULT 'N' COMMENT '当前状态,N:new新问题,C:closed已完结,D:doing进行中,B:back撤回',
+  CREATED datetime DEFAULT NULL COMMENT '提问日期',
+  LASTMOD datetime DEFAULT NULL COMMENT '修改日期',
+  CREATER varchar(32) DEFAULT NULL COMMENT '问题录入员',
+  MODIFYER varchar(32) DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (QSTN_ID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问题表';
+
+
+DROP TABLE IF EXISTS gen_answer;
+CREATE TABLE gen_answer (
+  ANSR_ID varchar(32) NOT NULL COMMENT '答复ID',
+  QSTN_ID varchar(32) NOT NULL COMMENT '问题ID',
+  ANSR_DESC varchar(5000) DEFAULT NULL COMMENT '回答内容描述',
+  ANSR_AGREE INT(11) DEFAULT 0 COMMENT '赞同次数',
+  ANSR_OPOS int(11) DEFAULT 0 COMMENT '反对次数',
+  CREATED datetime DEFAULT NULL COMMENT '回答日期',
+  LASTMOD datetime DEFAULT NULL COMMENT '修改日期',
+  CREATER varchar(32) DEFAULT NULL COMMENT '回答人',
+  MODIFYER varchar(32) DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (QSTN_ID),
+  KEY FK_ANSR_QSTN (QSTN_ID),
+  CONSTRAINT FK_ANSR_QSTN FOREIGN KEY (QSTN_ID) REFERENCES gen_question (QSTN_ID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='答题表';
+
+DROP TABLE IF EXISTS gen_qa_log;
+CREATE TABLE gen_qa_log (
+  LOG_ID varchar(32) NOT NULL COMMENT '日志ID',
+  QA_TYPE char(1) NOT NULL COMMENT '操作类型，A:agree赞同,O:Oppose反对',
+  CREATED datetime DEFAULT NULL COMMENT '操作日期',
+  LASTMOD datetime DEFAULT NULL COMMENT '修改日期',
+  CREATER varchar(32) DEFAULT NULL COMMENT '操作人',
+  MODIFYER varchar(32) DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (LOG_ID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问答日志表';
