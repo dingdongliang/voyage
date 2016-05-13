@@ -1,25 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
-%>
-<base href="<%=basePath%>"/>
 <link rel="stylesheet" href="resources/show/css/head.css"/>
-<script type="text/javascript"
-        src="resources/public/js/jquery.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(function () {
         $('.nav li a').each(function () {
             if ($($(this))[0].href == String(window.location))
                 $(this).parent().addClass('active');
         });
     })
 </script>
-
 <header class="header">
     <div class="navbar">
         <div class="container-fluid">

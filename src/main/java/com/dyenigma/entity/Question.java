@@ -3,11 +3,21 @@ package com.dyenigma.entity;
 public class Question extends BaseDomain {
     private String qstnId;
 
+    private String qstnTitle;
+
     private String qstnKey;
 
     private String qstnDesc;
 
     private String status;
+
+    public String getQstnTitle() {
+        return qstnTitle;
+    }
+
+    public void setQstnTitle(String qstnTitle) {
+        this.qstnTitle = qstnTitle;
+    }
 
     public String getQstnId() {
         return qstnId;

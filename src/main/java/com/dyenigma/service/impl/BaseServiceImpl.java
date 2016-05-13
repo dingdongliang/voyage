@@ -43,7 +43,8 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     protected UserPostMapper userPostMapper;
     @Autowired
     protected UserRoleMapper userRoleMapper;
-
+    @Autowired
+    protected QuestionMapper questionMapper;
 
     @SuppressWarnings("rawtypes")
     private Class clazz = null;

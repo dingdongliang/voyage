@@ -1,11 +1,17 @@
-package com.dyenigma.dao;
+package com.dyenigma.service;
 
 import com.dyenigma.entity.Question;
 import com.dyenigma.utils.PageUtil;
 
 import java.util.List;
 
-public interface QuestionMapper extends BaseMapper<Question> {
+/**
+ * Description:
+ * author  dyenigma
+ * date 2016/5/13 11:00
+ */
+public interface QuestionService extends BaseService<Question> {
+
     /**
      * Description: 分页查询所有信息
      * Name:findAllByPage

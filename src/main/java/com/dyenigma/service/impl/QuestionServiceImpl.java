@@ -1,11 +1,21 @@
-package com.dyenigma.dao;
+package com.dyenigma.service.impl;
 
 import com.dyenigma.entity.Question;
+import com.dyenigma.service.QuestionService;
 import com.dyenigma.utils.PageUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface QuestionMapper extends BaseMapper<Question> {
+/**
+ * Description:
+ * author  dyenigma
+ * date 2016/5/13 11:06
+ */
+@Transactional
+@Service("questionService")
+public class QuestionServiceImpl extends BaseServiceImpl<Question> implements QuestionService {
     /**
      * Description: 分页查询所有信息
      * Name:findAllByPage
@@ -13,8 +23,13 @@ public interface QuestionMapper extends BaseMapper<Question> {
      * Time:2016/5/13 11:10
      * param:[pageUtil]
      * return:java.util.List<com.dyenigma.entity.Question>
+     *
+     * @param pageUtil
      */
-    List<Question> findAllByPage(PageUtil pageUtil);
+    @Override
+    public List<Question> findAllByPage(PageUtil pageUtil) {
+        return questionMapper.findAllByPage(pageUtil);
+    }
 
     /**
      * Description:查找某个用户的所有问题
@@ -23,8 +38,13 @@ public interface QuestionMapper extends BaseMapper<Question> {
      * Time:2016/5/13 11:04
      * param:[userId]
      * return:java.util.List<com.dyenigma.entity.Question>
+     *
+     * @param userId
      */
-    List<Question> findAllByUser(String userId);
+    @Override
+    public List<Question> findAllByUser(String userId) {
+        return null;
+    }
 
     /**
      * Description:查找某段时间内的所有问题
@@ -33,8 +53,14 @@ public interface QuestionMapper extends BaseMapper<Question> {
      * Time:2016/5/13 11:04
      * param:[start, end]
      * return:java.util.List<com.dyenigma.entity.Question>
+     *
+     * @param start
+     * @param end
      */
-    List<Question> findAllByTime(String start, String end);
+    @Override
+    public List<Question> findAllByTime(String start, String end) {
+        return null;
+    }
 
     /**
      * Description:按关键字列查询问题
@@ -43,8 +69,13 @@ public interface QuestionMapper extends BaseMapper<Question> {
      * Time:2016/5/13 11:04
      * param:[key]
      * return:java.util.List<com.dyenigma.entity.Question>
+     *
+     * @param key
      */
-    List<Question> findAllByKey(String key);
+    @Override
+    public List<Question> findAllByKey(String key) {
+        return null;
+    }
 
     /**
      * Description:模糊查询
@@ -53,6 +84,11 @@ public interface QuestionMapper extends BaseMapper<Question> {
      * Time:2016/5/13 11:05
      * param:[word]
      * return:java.util.List<com.dyenigma.entity.Question>
+     *
+     * @param word
      */
-    List<Question> findAllByWord(String word);
+    @Override
+    public List<Question> findAllByWord(String word) {
+        return null;
+    }
 }

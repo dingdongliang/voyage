@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyenigma.dao.FrontMenuMapper">
+    <resultMap id="BaseResultMap" type="com.dyenigma.entity.FrontMenu">
+        <id column="FM_ID" property="fmId" jdbcType="VARCHAR"/>
+        <result column="FM_URL" property="fmUrl" jdbcType="VARCHAR"/>
+        <result column="FM_DESC" property="fmDesc" jdbcType="VARCHAR"/>
+        <result column="SORT" property="sort" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        FM_ID, FM_URL, FM_DESC, SORT, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from gen_front_menu
+        where FM_ID = #{fmId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from gen_front_menu
+        where FM_ID = #{fmId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.dyenigma.entity.FrontMenu">
+        insert into gen_front_menu (FM_ID, FM_URL, FM_DESC,
+        SORT, STATUS, CREATED,
+        LASTMOD, CREATER, MODIFYER
+        )
+        values (#{fmId,jdbcType=VARCHAR}, #{fmUrl,jdbcType=VARCHAR}, #{fmDesc,jdbcType=VARCHAR},
+        #{sort,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP},
+        #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.dyenigma.entity.FrontMenu">
+        insert into gen_front_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fmId != null">
+                FM_ID,
+            </if>
+            <if test="fmUrl != null">
+                FM_URL,
+            </if>
+            <if test="fmDesc != null">
+                FM_DESC,
+            </if>
+            <if test="sort != null">
+                SORT,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fmId != null">
+                #{fmId,jdbcType=VARCHAR},
+            </if>
+            <if test="fmUrl != null">
+                #{fmUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="fmDesc != null">
+                #{fmDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.FrontMenu">
+        update gen_front_menu
+        <set>
+            <if test="fmUrl != null">
+                FM_URL = #{fmUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="fmDesc != null">
+                FM_DESC = #{fmDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                SORT = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where FM_ID = #{fmId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.FrontMenu">
+        update gen_front_menu
+        set FM_URL = #{fmUrl,jdbcType=VARCHAR},
+        FM_DESC = #{fmDesc,jdbcType=VARCHAR},
+        SORT = #{sort,jdbcType=INTEGER},
+        STATUS = #{status,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        where FM_ID = #{fmId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -3,6 +3,7 @@
 <mapper namespace="com.dyenigma.dao.QuestionMapper">
     <resultMap id="BaseResultMap" type="com.dyenigma.entity.Question">
         <id column="QSTN_ID" property="qstnId" jdbcType="VARCHAR"/>
+        <result column="QSTN_TITLE" property="qstnTitle" jdbcType="VARCHAR"/>
         <result column="QSTN_KEY" property="qstnKey" jdbcType="VARCHAR"/>
         <result column="QSTN_DESC" property="qstnDesc" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="CHAR"/>
@@ -12,7 +13,7 @@
         <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        QSTN_ID, QSTN_KEY, QSTN_DESC, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+        QSTN_ID, QSTN_TITLE, QSTN_KEY, QSTN_DESC, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
@@ -25,10 +26,11 @@
         where QSTN_ID = #{qstnId,jdbcType=VARCHAR}
     </delete>
     <insert id="insert" parameterType="com.dyenigma.entity.Question">
-        insert into gen_question (QSTN_ID, QSTN_KEY, QSTN_DESC,
+        insert into gen_question (QSTN_ID,QSTN_TITLE, QSTN_KEY, QSTN_DESC,
         STATUS, CREATED, LASTMOD,
         CREATER, MODIFYER)
-        values (#{qstnId,jdbcType=VARCHAR}, #{qstnKey,jdbcType=VARCHAR}, #{qstnDesc,jdbcType=VARCHAR},
+        values (#{qstnId,jdbcType=VARCHAR}, #{qstnTitle,jdbcType=VARCHAR}, #{qstnKey,jdbcType=VARCHAR},
+        #{qstnDesc,jdbcType=VARCHAR},
         #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP}, #{lastmod,jdbcType=TIMESTAMP},
         #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR})
     </insert>
@@ -37,6 +39,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="qstnId != null">
                 QSTN_ID,
+            </if>
+            <if test="qstnTitle != null">
+                QSTN_TITLE,
             </if>
             <if test="qstnKey != null">
                 QSTN_KEY,
@@ -64,6 +69,9 @@
             <if test="qstnId != null">
                 #{qstnId,jdbcType=VARCHAR},
             </if>
+            <if test="qstnTitle != null">
+                #{qstnTitle,jdbcType=VARCHAR},
+            </if>
             <if test="qstnKey != null">
                 #{qstnKey,jdbcType=VARCHAR},
             </if>
@@ -90,6 +98,9 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.dyenigma.entity.Question">
         update gen_question
         <set>
+            <if test="qstnTitle != null">
+                QSTN_TITLE = #{qstnTitle,jdbcType=VARCHAR},
+            </if>
             <if test="qstnKey != null">
                 QSTN_KEY = #{qstnKey,jdbcType=VARCHAR},
             </if>
@@ -116,7 +127,8 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.dyenigma.entity.Question">
         update gen_question
-        set QSTN_KEY = #{qstnKey,jdbcType=VARCHAR},
+        set QSTN_TITLE = #{qstnTitle,jdbcType=VARCHAR},
+        QSTN_KEY = #{qstnKey,jdbcType=VARCHAR},
         QSTN_DESC = #{qstnDesc,jdbcType=VARCHAR},
         STATUS = #{status,jdbcType=CHAR},
         CREATED = #{created,jdbcType=TIMESTAMP},
@@ -125,4 +137,45 @@
         MODIFYER = #{modifyer,jdbcType=VARCHAR}
         where QSTN_ID = #{qstnId,jdbcType=VARCHAR}
     </update>
+    <select id="findAllByPage" parameterType="com.dyenigma.utils.PageUtil" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gen_question LIMIT #{begin},#{end}
+    </select>
+    <select id="findAllByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gen_question
+        WHERE STATUS='E' AND CREATER = #{creater,jdbcType=VARCHAR} ORDER BY CREATED
+    </select>
+    <select id="findAllByTime" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gen_question
+        WHERE STATUS='E' AND
+        CREATED &gt;= #{start,jdbcType=VARCHAR} AND CREATED &lt;= #{end,jdbcType=VARCHAR}
+        ORDER BY CREATED
+    </select>
+    <select id="findAllByKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gen_question
+        WHERE STATUS='E' AND QSTN_KEY like CONCAT(CONCAT('%', #{qstnKey,jdbcType=VARCHAR}), '%') ORDER BY
+        CREATED
+    </select>
+    <select id="findAllByWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gen_question
+        WHERE STATUS='E' AND (
+        QSTN_KEY like CONCAT(CONCAT('%', #{word,jdbcType=VARCHAR}), '%')
+        OR
+        QSTN_TITLE like CONCAT(CONCAT('%', #{word,jdbcType=VARCHAR}), '%')
+        OR
+        QSTN_DESC like CONCAT(CONCAT('%', #{word,jdbcType=VARCHAR}), '%')
+        ) ORDER BY CREATED
+    </select>
+    <select id="getCount" resultType="long">
+        SELECT COUNT(*) FROM gen_question
+    </select>
 </mapper>

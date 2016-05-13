@@ -7,3 +7,4 @@
 <script type="text/javascript" src="resources/check/js/jqueryUtil.js"></script>
 <script type="text/javascript" src="resources/public/js/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="resources/public/js/easyui-validate.js"></script>
+<script type="text/javascript" src="resources/public/js/moment.min.js"></script>
