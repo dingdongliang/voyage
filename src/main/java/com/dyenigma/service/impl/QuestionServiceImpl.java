@@ -1,8 +1,10 @@
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.QuestionMapper;
 import com.dyenigma.entity.Question;
 import com.dyenigma.service.QuestionService;
 import com.dyenigma.utils.PageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,9 @@ import java.util.List;
 @Transactional
 @Service("questionService")
 public class QuestionServiceImpl extends BaseServiceImpl<Question> implements QuestionService {
+    @Autowired
+    protected QuestionMapper questionMapper;
+
     /**
      * Description: 分页查询所有信息
      * Name:findAllByPage

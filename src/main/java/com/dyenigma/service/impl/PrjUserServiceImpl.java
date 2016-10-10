@@ -1,8 +1,11 @@
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.PrjUserMapper;
+import com.dyenigma.dao.UserMapper;
 import com.dyenigma.entity.PrjUser;
 import com.dyenigma.entity.User;
 import com.dyenigma.service.PrjUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,11 @@ import java.util.stream.Collectors;
 @Transactional
 @Service("prjUserService")
 public class PrjUserServiceImpl extends BaseServiceImpl<PrjUser> implements PrjUserService {
+    @Autowired
+    protected PrjUserMapper prjUserMapper;
+    @Autowired
+    protected UserMapper userMapper;
+
     @Override
     public List<User> getPrjUserByPrjId(String prjId) {
         List<PrjUser> puList = prjUserMapper.getPrjUserByPrjId(prjId);

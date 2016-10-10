@@ -1,5 +1,7 @@
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.PermissionMapper;
+import com.dyenigma.dao.RolePmsnMapper;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.Permission;
 import com.dyenigma.entity.RolePmsn;
@@ -9,10 +11,16 @@ import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * topic
@@ -22,6 +30,10 @@ import java.util.*;
 @Transactional
 @Service("rolePmsnService")
 public class RolePmsnServiceImpl extends BaseServiceImpl<RolePmsn> implements RolePmsnService {
+    @Autowired
+    protected RolePmsnMapper rolePmsnMapper;
+    @Autowired
+    protected PermissionMapper permissionMapper;
 
     private final Logger LOGGER = LoggerFactory.getLogger(RolePmsnServiceImpl.class);
 
@@ -80,7 +92,7 @@ public class RolePmsnServiceImpl extends BaseServiceImpl<RolePmsn> implements Ro
                     rolePmsn.setPmsnId(id);
                     rolePmsn.setRoleId(roleId);
                     rolePmsn.setRpId(UUIDUtils.getUUID());
-                    rolePmsnMapper.insert(rolePmsn);
+                    baseMapper.insert(rolePmsn);
                 }
                 //同时删除已经处理过的map值
                 map.remove(id);
@@ -88,7 +100,7 @@ public class RolePmsnServiceImpl extends BaseServiceImpl<RolePmsn> implements Ro
         }
         //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
         for (Map.Entry<String, RolePmsn> entry : map.entrySet()) {
-            rolePmsnMapper.deleteByPrimaryKey(entry.getValue().getRpId());
+            baseMapper.deleteByPrimaryKey(entry.getValue().getRpId());
         }
 
         return true;
@@ -97,7 +109,7 @@ public class RolePmsnServiceImpl extends BaseServiceImpl<RolePmsn> implements Ro
     private void updRolePermission(String userId, RolePmsn rolePermission, String status) {
         BaseDomain.editLog(rolePermission, userId);
         rolePermission.setStatus(status);
-        rolePmsnMapper.updateByPrimaryKeySelective(rolePermission);
+        baseMapper.updateByPrimaryKeySelective(rolePermission);
     }
 
     @Override
@@ -120,7 +132,7 @@ public class RolePmsnServiceImpl extends BaseServiceImpl<RolePmsn> implements Ro
             rolePmsn.setRoleId(roleId);
             rolePmsn.setPmsnId(pmsn.getPmsnId());
             rolePmsn.setStatus(Constants.PERSISTENCE_STATUS);
-            rolePmsnMapper.insert(rolePmsn);
+            baseMapper.insert(rolePmsn);
         }
 
         return true;

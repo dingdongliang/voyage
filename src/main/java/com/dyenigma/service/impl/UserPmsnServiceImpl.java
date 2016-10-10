@@ -1,11 +1,13 @@
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.UserPmsnMapper;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.UserPmsn;
 import com.dyenigma.service.UserPmsnService;
 import com.dyenigma.utils.Constants;
 import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,9 @@ import java.util.Map;
 @Transactional
 @Service("userPmsnService")
 public class UserPmsnServiceImpl extends BaseServiceImpl<UserPmsn> implements UserPmsnService {
+    @Autowired
+    protected UserPmsnMapper userPmsnMapper;
+
     /**
      * 保存分配用户权限
      * param userId 用户id
@@ -67,7 +72,7 @@ public class UserPmsnServiceImpl extends BaseServiceImpl<UserPmsn> implements Us
                     //传递过来的Id
                     userPmsn.setUserId(userId);
                     userPmsn.setUpmId(UUIDUtils.getUUID());
-                    userPmsnMapper.insert(userPmsn);
+                    baseMapper.insert(userPmsn);
                 }
                 //同时删除已经处理过的map值
                 map.remove(id);
@@ -75,7 +80,7 @@ public class UserPmsnServiceImpl extends BaseServiceImpl<UserPmsn> implements Us
         }
         //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
         for (Map.Entry<String, UserPmsn> entry : map.entrySet()) {
-            userPmsnMapper.deleteByPrimaryKey(entry.getValue().getUpmId());
+            baseMapper.deleteByPrimaryKey(entry.getValue().getUpmId());
         }
 
         return true;
@@ -84,7 +89,7 @@ public class UserPmsnServiceImpl extends BaseServiceImpl<UserPmsn> implements Us
     private void updUserPmsn(String userId, UserPmsn userPmsn, String status) {
         BaseDomain.editLog(userPmsn, userId);
         userPmsn.setStatus(status);
-        userPmsnMapper.updateByPrimaryKeySelective(userPmsn);
+        baseMapper.updateByPrimaryKeySelective(userPmsn);
     }
 
     /**

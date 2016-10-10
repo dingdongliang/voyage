@@ -1,10 +1,18 @@
 package com.dyenigma.service.impl;
 
-import com.dyenigma.entity.*;
+import com.dyenigma.dao.PrjRoleMapper;
+import com.dyenigma.dao.PrjUserMapper;
+import com.dyenigma.dao.ProjectMapper;
+import com.dyenigma.entity.BaseDomain;
+import com.dyenigma.entity.PrjRole;
+import com.dyenigma.entity.PrjUser;
+import com.dyenigma.entity.Project;
+import com.dyenigma.entity.User;
 import com.dyenigma.service.ProjectService;
 import com.dyenigma.utils.Constants;
 import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +28,13 @@ import java.util.Map;
 @Transactional
 @Service("projectService")
 public class ProjectServiceImpl extends BaseServiceImpl<Project> implements ProjectService {
+    @Autowired
+    protected ProjectMapper projectMapper;
+    @Autowired
+    protected PrjRoleMapper prjRoleMapper;
+    @Autowired
+    protected PrjUserMapper prjUserMapper;
+
     /**
      * Description:查询公司所属项目组信息
      * Name:getPrjByCoId
@@ -49,11 +64,11 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
             BaseDomain.createLog(prj, userId);
             prj.setStatus(Constants.PERSISTENCE_STATUS);
             prj.setPrjId(UUIDUtils.getUUID());
-            projectMapper.insert(prj);
+            baseMapper.insert(prj);
         } else {
 
             BaseDomain.editLog(prj, userId);
-            projectMapper.updateByPrimaryKeySelective(prj);
+            baseMapper.updateByPrimaryKeySelective(prj);
         }
         return true;
     }
@@ -75,12 +90,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
         } else {
             List<PrjRole> prjRoleList = prjRoleMapper.findAllByPrjId(prjId);
             for (PrjRole prjRole : prjRoleList) {
-                prjRoleMapper.deleteByPrimaryKey(prjRole.getPrId());
+                baseMapper.deleteByPrimaryKey(prjRole.getPrId());
             }
 
             Project prj = projectMapper.selectByPrimaryKey(prjId);
             prj.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-            return projectMapper.updateByPrimaryKey(prj) > 0;
+            return baseMapper.updateByPrimaryKey(prj) > 0;
         }
     }
 
@@ -138,7 +153,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
         }
         //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
         for (Map.Entry<String, PrjRole> entry : map.entrySet()) {
-            prjRoleMapper.deleteByPrimaryKey(entry.getValue().getPrId());
+            baseMapper.deleteByPrimaryKey(entry.getValue().getPrId());
         }
 
         return true;
@@ -220,7 +235,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
         }
         //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
         for (Map.Entry<String, PrjUser> entry : map.entrySet()) {
-            prjUserMapper.deleteByPrimaryKey(entry.getValue().getPuId());
+            baseMapper.deleteByPrimaryKey(entry.getValue().getPuId());
         }
 
         return true;

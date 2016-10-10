@@ -9,6 +9,9 @@
 
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.PermissionMapper;
+import com.dyenigma.dao.RolePmsnMapper;
+import com.dyenigma.dao.UserPmsnMapper;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.Permission;
 import com.dyenigma.model.MenuModel;
@@ -21,6 +24,7 @@ import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +41,12 @@ import java.util.List;
 @Service("permissionService")
 public class PermissionServiceImpl extends BaseServiceImpl<Permission> implements PermissionService {
     private final Logger LOGGER = LoggerFactory.getLogger(PermissionServiceImpl.class);
+    @Autowired
+    protected PermissionMapper permissionMapper;
+    @Autowired
+    protected RolePmsnMapper rolePmsnMapper;
+    @Autowired
+    protected UserPmsnMapper userPmsnMapper;
 
     @Override
     public List<MenuModel> createMenu() {
@@ -114,9 +124,9 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
         } else {
             userPmsnMapper.delByPmsnId(id);//删除用户权限映射
             rolePmsnMapper.delByPmsnId(id);//删除角色权限映射
-            Permission pmsn = permissionMapper.selectByPrimaryKey(id);
+            Permission pmsn = baseMapper.selectByPrimaryKey(id);
             pmsn.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-            return permissionMapper.updateByPrimaryKey(pmsn) > 0;
+            return baseMapper.updateByPrimaryKey(pmsn) > 0;
         }
     }
 
@@ -164,7 +174,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
                 permission.setPrntId("0");
             }
             permission.setPmsnId(UUIDUtils.getUUID());
-            permissionMapper.insert(permission);
+            baseMapper.insert(permission);
         } else {
             //这里还要考虑如果修改菜单名称，同步修改其子菜单对应的prntName名称，关系不大
             if (Constants.PMSN_M.equals(permission.getPmsnType())) {
@@ -173,7 +183,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
                 permission.setState(Constants.TREE_STATUS_OPEN);
             }
             BaseDomain.editLog(permission, userId);
-            permissionMapper.updateByPrimaryKeySelective(permission);
+            baseMapper.updateByPrimaryKeySelective(permission);
         }
         return true;
     }

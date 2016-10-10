@@ -1,11 +1,13 @@
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.UserPostMapper;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.UserPost;
 import com.dyenigma.service.UserPostService;
 import com.dyenigma.utils.Constants;
 import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,9 @@ import java.util.stream.Collectors;
 @Transactional
 @Service("userPostService")
 public class UserPostServiceImpl extends BaseServiceImpl<UserPost> implements UserPostService {
+    @Autowired
+    protected UserPostMapper userPostMapper;
+
     /**
      * Description: 根据岗位查询用户ID集合
      * Name:findByPostId
@@ -88,7 +93,7 @@ public class UserPostServiceImpl extends BaseServiceImpl<UserPost> implements Us
                     //传递过来的Id
                     userPost.setUserId(userId);
                     userPost.setUpId(UUIDUtils.getUUID());
-                    userPostMapper.insert(userPost);
+                    baseMapper.insert(userPost);
                 }
                 //同时删除已经处理过的map值
                 map.remove(id);
@@ -96,7 +101,7 @@ public class UserPostServiceImpl extends BaseServiceImpl<UserPost> implements Us
         }
         //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
         for (Map.Entry<String, UserPost> entry : map.entrySet()) {
-            userPostMapper.deleteByPrimaryKey(entry.getValue().getUpId());
+            baseMapper.deleteByPrimaryKey(entry.getValue().getUpId());
         }
 
         return true;
@@ -105,7 +110,7 @@ public class UserPostServiceImpl extends BaseServiceImpl<UserPost> implements Us
     private void updUserPost(String userId, UserPost userPost, String status) {
         BaseDomain.editLog(userPost, userId);
         userPost.setStatus(status);
-        userPostMapper.updateByPrimaryKeySelective(userPost);
+        baseMapper.updateByPrimaryKeySelective(userPost);
     }
 
     /**

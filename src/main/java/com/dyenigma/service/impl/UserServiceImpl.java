@@ -1,6 +1,20 @@
 package com.dyenigma.service.impl;
 
-import com.dyenigma.entity.*;
+import com.dyenigma.dao.PostMapper;
+import com.dyenigma.dao.PrjUserMapper;
+import com.dyenigma.dao.RoleMapper;
+import com.dyenigma.dao.UserMapper;
+import com.dyenigma.dao.UserPmsnMapper;
+import com.dyenigma.dao.UserPostMapper;
+import com.dyenigma.dao.UserRoleMapper;
+import com.dyenigma.entity.BaseDomain;
+import com.dyenigma.entity.Post;
+import com.dyenigma.entity.PrjUser;
+import com.dyenigma.entity.Role;
+import com.dyenigma.entity.User;
+import com.dyenigma.entity.UserPmsn;
+import com.dyenigma.entity.UserPost;
+import com.dyenigma.entity.UserRole;
 import com.dyenigma.model.TreeModel;
 import com.dyenigma.service.UserService;
 import com.dyenigma.utils.Constants;
@@ -10,6 +24,7 @@ import com.dyenigma.utils.UUIDUtils;
 import com.dyenigma.utils.security.Md5Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +38,25 @@ import java.util.Set;
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+    @Autowired
+    protected UserMapper userMapper;
+    @Autowired
+    protected RoleMapper roleMapper;
+    @Autowired
+    protected UserRoleMapper userRoleMapper;
+    @Autowired
+    protected UserPmsnMapper userPmsnMapper;
+    @Autowired
+    protected UserPostMapper userPostMapper;
+    @Autowired
+    protected PrjUserMapper prjUserMapper;
+    @Autowired
+    protected PostMapper postMapper;
 
     @Override
     public List<User> findAll() {
         LOGGER.debug("run the users findall");
-        return userMapper.findAll();
+        return baseMapper.findAll();
     }
 
     @Override
@@ -45,7 +74,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
             user.setPassword(Md5Utils.hash(Constants.DEFAULT_PASSWORD));
             user.setStatus(Constants.PERSISTENCE_STATUS);
             user.setUserId(UUIDUtils.getUUID());
-            userMapper.insert(user);
+            baseMapper.insert(user);
 
             List<Role> rList = roleMapper.findDefaultRole();
             for (Role role : rList) {
@@ -60,7 +89,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
         } else {
             BaseDomain.editLog(user, userId);
-            userMapper.updateByPrimaryKeySelective(user);
+            baseMapper.updateByPrimaryKeySelective(user);
         }
         return true;
     }
@@ -82,30 +111,30 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         //删除用户角色映射
         List<UserRole> urList = userRoleMapper.findAllByUserId(userId);
         for (UserRole userRole : urList) {
-            userRoleMapper.deleteByPrimaryKey(userRole.getUrId());
+            baseMapper.deleteByPrimaryKey(userRole.getUrId());
         }
 
         //删除用户权限映射
         List<UserPmsn> upList = userPmsnMapper.findAllByUserId(userId);
         for (UserPmsn userPmsn : upList) {
-            userPmsnMapper.deleteByPrimaryKey(userPmsn.getUpmId());
+            baseMapper.deleteByPrimaryKey(userPmsn.getUpmId());
         }
 
         //删除用户岗位映射
         List<UserPost> userPostList = userPostMapper.findAllByUserId(userId);
         for (UserPost userPost : userPostList) {
-            userPostMapper.deleteByPrimaryKey(userPost.getUpId());
+            baseMapper.deleteByPrimaryKey(userPost.getUpId());
         }
         //删除项目组用户映射
         List<PrjUser> prjUserList = prjUserMapper.findAllByUserId(userId);
         for (PrjUser prjUser : prjUserList) {
-            prjUserMapper.deleteByPrimaryKey(prjUser.getPuId());
+            baseMapper.deleteByPrimaryKey(prjUser.getPuId());
         }
         //删除用户
 
-        User user = userMapper.selectByPrimaryKey(userId);
+        User user = baseMapper.selectByPrimaryKey(userId);
         user.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-        return userMapper.updateByPrimaryKey(user) > 0;
+        return baseMapper.updateByPrimaryKey(user) > 0;
 
     }
 

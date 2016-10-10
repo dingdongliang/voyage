@@ -1,11 +1,22 @@
 package com.dyenigma.service.impl;
 
-import com.dyenigma.entity.*;
+import com.dyenigma.dao.CompanyMapper;
+import com.dyenigma.dao.DivisionMapper;
+import com.dyenigma.dao.PostMapper;
+import com.dyenigma.dao.PostRoleMapper;
+import com.dyenigma.dao.UserPostMapper;
+import com.dyenigma.entity.BaseDomain;
+import com.dyenigma.entity.Company;
+import com.dyenigma.entity.Division;
+import com.dyenigma.entity.Post;
+import com.dyenigma.entity.PostRole;
+import com.dyenigma.entity.UserPost;
 import com.dyenigma.model.TreeModel;
 import com.dyenigma.service.PostService;
 import com.dyenigma.utils.Constants;
 import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +31,16 @@ import java.util.List;
 @Transactional
 @Service("postService")
 public class PostServiceImpl extends BaseServiceImpl<Post> implements PostService {
+    @Autowired
+    protected PostMapper postMapper;
+    @Autowired
+    protected CompanyMapper companyMapper;
+    @Autowired
+    protected DivisionMapper divisionMapper;
+    @Autowired
+    protected UserPostMapper userPostMapper;
+    @Autowired
+    protected PostRoleMapper postRoleMapper;
 
     /**
      * Description: 根据部门ID查询该部门下所有的岗位信息
@@ -49,10 +70,10 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements PostServic
             BaseDomain.createLog(post, userId);
             post.setStatus(Constants.PERSISTENCE_STATUS);
             post.setPostId(UUIDUtils.getUUID());
-            postMapper.insert(post);
+            baseMapper.insert(post);
         } else {
             BaseDomain.editLog(post, userId);
-            postMapper.updateByPrimaryKeySelective(post);
+            baseMapper.updateByPrimaryKeySelective(post);
         }
         return true;
     }
@@ -139,11 +160,11 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements PostServic
             //没有用户的岗位可以删除，首先删除岗位角色的对应关系，然后删除岗位
             List<PostRole> prList = postRoleMapper.findAllByPostId(postId);
             for (PostRole postRole : prList) {
-                postRoleMapper.deleteByPrimaryKey(postRole.getPrId());
+                baseMapper.deleteByPrimaryKey(postRole.getPrId());
             }
-            Post post = postMapper.selectByPrimaryKey(postId);
+            Post post = baseMapper.selectByPrimaryKey(postId);
             post.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-            return postMapper.updateByPrimaryKey(post) > 0;
+            return baseMapper.updateByPrimaryKey(post) > 0;
         }
     }
 }

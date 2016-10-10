@@ -1,5 +1,8 @@
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.CompanyMapper;
+import com.dyenigma.dao.DivisionMapper;
+import com.dyenigma.dao.ProjectMapper;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.Company;
 import com.dyenigma.entity.Division;
@@ -12,6 +15,7 @@ import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,13 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
 
     private final Logger LOGGER = LoggerFactory.getLogger(CompanyServiceImpl.class);
 
+    @Autowired
+    protected CompanyMapper companyMapper;
+    @Autowired
+    protected DivisionMapper divisionMapper;
+    @Autowired
+    protected ProjectMapper projectMapper;
+
     /**
      * Description: 获取所有的公司名称和ID
      * Name:getAllCoName
@@ -41,7 +52,7 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
      */
     @Override
     public List<TreeModel> getAllCoName() {
-        List<Company> coList = companyMapper.findAll();
+        List<Company> coList = baseMapper.findAll();
         return permToTree("0", coList);
     }
 
@@ -73,7 +84,7 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
     @Override
     public Long getCount(Map<String, Object> paramMap) {
         LOGGER.info("开始查找公司信息的总条数");
-        return companyMapper.getCount(paramMap);
+        return baseMapper.getCount(paramMap);
     }
 
     @Override
@@ -85,9 +96,9 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
         if (divList.size() > 0 && coList.size() > 0 && pList.size() > 0) {
             return false;
         } else {
-            Company co = companyMapper.selectByPrimaryKey(compId);
+            Company co = baseMapper.selectByPrimaryKey(compId);
             co.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-            return companyMapper.updateByPrimaryKey(co) > 0;
+            return baseMapper.updateByPrimaryKey(co) > 0;
         }
     }
 
@@ -104,10 +115,10 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
             if (StringUtil.isEmpty(company.getPrntId())) {
                 company.setPrntId("0");
             }
-            companyMapper.insert(company);
+            baseMapper.insert(company);
         } else {
             BaseDomain.editLog(company, userId);
-            companyMapper.updateByPrimaryKeySelective(company);
+            baseMapper.updateByPrimaryKeySelective(company);
         }
         return true;
     }
@@ -124,9 +135,9 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
     public List<Company> AllCoById(String coId) {
         List<Company> returnList = new ArrayList<>();
 
-        returnList.add(companyMapper.selectByPrimaryKey(coId));
+        returnList.add(baseMapper.selectByPrimaryKey(coId));
         List<Company> coList = new ArrayList<>();
-        coList.add(companyMapper.selectByPrimaryKey(coId));
+        coList.add(baseMapper.selectByPrimaryKey(coId));
         returnList.addAll(findByPrntId(coId, coList).stream().collect(Collectors.toList()));
 
         return returnList;

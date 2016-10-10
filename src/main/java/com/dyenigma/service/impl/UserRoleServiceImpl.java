@@ -1,5 +1,6 @@
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.UserRoleMapper;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.Role;
 import com.dyenigma.entity.UserRole;
@@ -9,6 +10,7 @@ import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,8 @@ import java.util.Map;
 public class UserRoleServiceImpl extends BaseServiceImpl<UserRole> implements UserRoleService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRoleServiceImpl.class);
+    @Autowired
+    protected UserRoleMapper userRoleMapper;
 
     /**
      * 好代码自己会说话
@@ -99,7 +103,7 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole> implements Us
                     //传递过来的Id
                     userRole.setUserId(userId);
                     userRole.setUrId(UUIDUtils.getUUID());
-                    userRoleMapper.insert(userRole);
+                    baseMapper.insert(userRole);
                 }
                 //同时删除已经处理过的map值
                 map.remove(id);
@@ -107,7 +111,7 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole> implements Us
         }
         //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
         for (Map.Entry<String, UserRole> entry : map.entrySet()) {
-            userRoleMapper.deleteByPrimaryKey(entry.getValue().getUrId());
+            baseMapper.deleteByPrimaryKey(entry.getValue().getUrId());
         }
 
         return true;
@@ -116,7 +120,7 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole> implements Us
     private void updUserRole(String userId, UserRole userRole, String status) {
         BaseDomain.editLog(userRole, userId);
         userRole.setStatus(status);
-        userRoleMapper.updateByPrimaryKeySelective(userRole);
+        baseMapper.updateByPrimaryKeySelective(userRole);
     }
 
     /**

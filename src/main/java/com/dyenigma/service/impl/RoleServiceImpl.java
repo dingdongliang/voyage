@@ -1,6 +1,18 @@
 package com.dyenigma.service.impl;
 
-import com.dyenigma.entity.*;
+import com.dyenigma.dao.PermissionMapper;
+import com.dyenigma.dao.PostRoleMapper;
+import com.dyenigma.dao.PrjRoleMapper;
+import com.dyenigma.dao.RoleMapper;
+import com.dyenigma.dao.RolePmsnMapper;
+import com.dyenigma.dao.UserRoleMapper;
+import com.dyenigma.entity.BaseDomain;
+import com.dyenigma.entity.Permission;
+import com.dyenigma.entity.PostRole;
+import com.dyenigma.entity.PrjRole;
+import com.dyenigma.entity.Role;
+import com.dyenigma.entity.RolePmsn;
+import com.dyenigma.entity.UserRole;
 import com.dyenigma.service.RoleService;
 import com.dyenigma.utils.Constants;
 import com.dyenigma.utils.PageUtil;
@@ -8,6 +20,7 @@ import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +35,18 @@ import java.util.Map;
 @Transactional
 @Service("roleService")
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
+    @Autowired
+    protected RoleMapper roleMapper;
+    @Autowired
+    protected PermissionMapper permissionMapper;
+    @Autowired
+    protected RolePmsnMapper rolePmsnMapper;
+    @Autowired
+    protected PostRoleMapper postRoleMapper;
+    @Autowired
+    protected PrjRoleMapper prjRoleMapper;
+    @Autowired
+    protected UserRoleMapper userRoleMapper;
 
     private final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
 
@@ -35,7 +60,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     @Override
     public Long getCount(Map<String, Object> paramMap) {
         LOGGER.info("开始查找用户信息的总条数");
-        return roleMapper.getCount(paramMap);
+        return baseMapper.getCount(paramMap);
     }
 
     /**
@@ -51,7 +76,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
             BaseDomain.createLog(role, userId);
             role.setStatus(Constants.PERSISTENCE_STATUS);
             role.setRoleId(UUIDUtils.getUUID());
-            roleMapper.insert(role);
+            baseMapper.insert(role);
 
             // 这里设置新增用户的默认权限,首先获取所有的默认且有效的权限
             List<Permission> pList = permissionMapper.findAllDefault();
@@ -68,7 +93,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
             }
         } else {
             BaseDomain.editLog(role, userId);
-            roleMapper.updateByPrimaryKeySelective(role);
+            baseMapper.updateByPrimaryKeySelective(role);
         }
         return true;
     }
@@ -79,30 +104,30 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         //删除角色权限关联
         List<RolePmsn> rpList = rolePmsnMapper.findAllByRoleId(id);
         for (RolePmsn rolePmsn : rpList) {
-            rolePmsnMapper.deleteByPrimaryKey(rolePmsn.getRpId());
+            baseMapper.deleteByPrimaryKey(rolePmsn.getRpId());
         }
 
         //删除角色岗位关联
         List<PostRole> prList = postRoleMapper.findAllByRoleId(id);
         for (PostRole postRole : prList) {
-            postRoleMapper.deleteByPrimaryKey(postRole.getPrId());
+            baseMapper.deleteByPrimaryKey(postRole.getPrId());
         }
 
         //删除角色用户关联
         List<UserRole> urList = userRoleMapper.findAllByRoleId(id);
         for (UserRole userRole : urList) {
-            userRoleMapper.deleteByPrimaryKey(userRole.getUrId());
+            baseMapper.deleteByPrimaryKey(userRole.getUrId());
         }
 
         //删除项目角色关联
         List<PrjRole> prjRoles = prjRoleMapper.findAllByRoleId(id);
         for (PrjRole prjRole : prjRoles) {
-            prjRoleMapper.deleteByPrimaryKey(prjRole.getPrId());
+            baseMapper.deleteByPrimaryKey(prjRole.getPrId());
         }
 
         //删除角色
-        Role role = roleMapper.selectByPrimaryKey(id);
+        Role role = baseMapper.selectByPrimaryKey(id);
         role.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-        return roleMapper.updateByPrimaryKey(role) > 0;
+        return baseMapper.updateByPrimaryKey(role) > 0;
     }
 }

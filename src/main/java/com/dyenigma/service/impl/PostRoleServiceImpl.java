@@ -1,11 +1,13 @@
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.PostRoleMapper;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.PostRole;
 import com.dyenigma.service.PostRoleService;
 import com.dyenigma.utils.Constants;
 import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,9 @@ import java.util.Map;
 @Transactional
 @Service("postRoleService")
 public class PostRoleServiceImpl extends BaseServiceImpl<PostRole> implements PostRoleService {
+    @Autowired
+    protected PostRoleMapper postRoleMapper;
+
     /**
      * 保存分配岗位角色
      * param postId 岗位id
@@ -66,7 +71,7 @@ public class PostRoleServiceImpl extends BaseServiceImpl<PostRole> implements Po
                     postRole.setRoleId(id);
                     postRole.setPostId(postId);
                     postRole.setPrId(UUIDUtils.getUUID());
-                    postRoleMapper.insert(postRole);
+                    baseMapper.insert(postRole);
                 }
                 //同时删除已经处理过的map值
                 map.remove(id);
@@ -74,7 +79,7 @@ public class PostRoleServiceImpl extends BaseServiceImpl<PostRole> implements Po
         }
         //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
         for (Map.Entry<String, PostRole> entry : map.entrySet()) {
-            postRoleMapper.deleteByPrimaryKey(entry.getValue().getPrId());
+            baseMapper.deleteByPrimaryKey(entry.getValue().getPrId());
         }
 
         return true;
@@ -83,7 +88,7 @@ public class PostRoleServiceImpl extends BaseServiceImpl<PostRole> implements Po
     private void updPostRole(String userId, PostRole postRole, String status) {
         BaseDomain.editLog(postRole, userId);
         postRole.setStatus(status);
-        postRoleMapper.updateByPrimaryKeySelective(postRole);
+        baseMapper.updateByPrimaryKeySelective(postRole);
     }
 
 

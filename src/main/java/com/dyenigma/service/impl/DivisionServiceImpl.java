@@ -9,6 +9,8 @@
 
 package com.dyenigma.service.impl;
 
+import com.dyenigma.dao.DivisionMapper;
+import com.dyenigma.dao.PostMapper;
 import com.dyenigma.entity.BaseDomain;
 import com.dyenigma.entity.Division;
 import com.dyenigma.entity.Post;
@@ -19,6 +21,7 @@ import com.dyenigma.utils.StringUtil;
 import com.dyenigma.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +39,10 @@ import java.util.List;
 public class DivisionServiceImpl extends BaseServiceImpl<Division> implements
         DivisionService {
     private final Logger LOGGER = LoggerFactory.getLogger(DivisionServiceImpl.class);
-
+    @Autowired
+    protected PostMapper postMapper;
+    @Autowired
+    protected DivisionMapper divisionMapper;
 
     @Override
     public boolean deleteById(String id) {
@@ -45,9 +51,9 @@ public class DivisionServiceImpl extends BaseServiceImpl<Division> implements
         if (pList.size() > 0) {
             return false;
         } else {
-            Division divi = divisionMapper.selectByPrimaryKey(id);
+            Division divi = baseMapper.selectByPrimaryKey(id);
             divi.setStatus(Constants.PERSISTENCE_DELETE_STATUS);
-            return divisionMapper.updateByPrimaryKey(divi) > 0;
+            return baseMapper.updateByPrimaryKey(divi) > 0;
         }
     }
 
@@ -80,12 +86,12 @@ public class DivisionServiceImpl extends BaseServiceImpl<Division> implements
             divi.setState(Constants.TREE_STATUS_OPEN);
             divi.setDivId(UUIDUtils.getUUID());
             divi.setIconCls(Constants.DIVISION_ICON);
-            divisionMapper.insert(divi);
+            baseMapper.insert(divi);
         } else {
             divi.setState(Constants.TREE_STATUS_OPEN);
             BaseDomain.editLog(divi, userId);
             divi.setIconCls(Constants.DIVISION_ICON);
-            divisionMapper.updateByPrimaryKeySelective(divi);
+            baseMapper.updateByPrimaryKeySelective(divi);
         }
         return true;
     }
