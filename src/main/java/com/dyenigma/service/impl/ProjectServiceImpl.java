@@ -153,7 +153,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
         }
         //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
         for (Map.Entry<String, PrjRole> entry : map.entrySet()) {
-            baseMapper.deleteByPrimaryKey(entry.getValue().getPrId());
+            prjRoleMapper.deleteByPrimaryKey(entry.getValue().getPrId());
         }
 
         return true;
